@@ -245,9 +245,35 @@ html[data-theme="dark"] .d-label{color:var(--ok)}
 html[data-theme="dark"] .home-ico.moon{background:#101A2E;color:#9DBCF5}
 .home-ico.book{background:var(--primary-soft);color:var(--primary)}
 html[data-theme="dark"] .home-ico.book{color:var(--ok)}
+.home-ico.star{background:var(--gold-soft);color:var(--gold-ink)}
+html[data-theme="dark"] .home-ico.star{color:var(--gold)}
 .home-card-title{font-weight:900;font-size:calc(var(--ui)*1.2);display:block;line-height:1.6}
 .home-card-sub{color:var(--ink2);font-size:calc(var(--ui)*.8);display:block;margin-top:4px}
 .home-arrow{margin-inline-start:auto;color:var(--ink2);flex:none;width:26px;height:26px}
+
+/* ===== أسماء الله الحسنى ===== */
+.asma-head{background:var(--gold-soft);border:1px solid var(--gold);border-radius:14px;padding:14px 18px;margin-top:14px}
+.asma-hadith{font-family:'Amiri','Geeza Pro',serif;font-size:calc(var(--ui)*1.02);line-height:2.1;color:var(--ink)}
+.asma-src{font-size:calc(var(--ui)*.74);color:var(--ink2);margin-top:8px}
+.asma-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px;padding-bottom:16px}
+@media (min-width:560px){.asma-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:900px){.asma-grid{grid-template-columns:1fr 1fr 1fr}}
+.asma-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:22px 12px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.asma-card::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--gold),var(--primary))}
+.asma-num{
+  position:absolute;top:8px;inset-inline-start:12px;
+  font-size:calc(var(--ui)*.7);color:var(--gold-ink);font-weight:800;
+}
+html[data-theme="dark"] .asma-num{color:var(--gold)}
+.asma-name{
+  font-family:'Amiri','Geeza Pro',serif;font-size:calc(var(--read)*.9);line-height:1.6;
+  color:var(--primary);font-weight:700;display:block;
+}
+html[data-theme="dark"] .asma-name{color:var(--ok)}
+.asma-card.allah{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-soft),var(--card) 70%)}
 
 /* ===== شريط تكبير الخط (الأسفل) ===== */
 .zoom-dock{
@@ -336,6 +362,11 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
           <span style="min-width:0"><span class="home-card-title">الأربعون النووية</span><span class="home-card-sub">٤٢ حديثًا مع شرحٍ موجز</span></span>
           <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
+        <button class="home-card" data-go="asma">
+          <span class="home-ico star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 5.7L19.6 9l-4.6 3.4 1.8 5.8L12 14.9 7.2 18.2l1.8-5.8L4.4 9l5.7-1.3z"/></svg></span>
+          <span style="min-width:0"><span class="home-card-title">أسماء الله الحسنى</span><span class="home-card-sub">٩٩ اسمًا</span></span>
+          <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
       </div>
     </section>
 
@@ -369,6 +400,15 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
         <input id="searchInput" type="search" placeholder="ابحث في الأربعين النووية…" autocomplete="off">
       </div>
       <div id="hadithList"></div>
+    </section>
+
+    <!-- قسم أسماء الله الحسنى -->
+    <section id="screen-asma" class="container wrap hidden">
+      <div class="asma-head">
+        <div class="asma-hadith">﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَى فَادْعُوهُ بِهَا﴾ — «إِنَّ لِلَّهِ تِسْعَةً وَتَسْعِينَ اسْمًا، مِائَةً إِلَّا وَاحِدًا، مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ»</div>
+        <div class="asma-src">رواه البخاري ومسلم</div>
+      </div>
+      <div id="asmaList" class="asma-grid"></div>
     </section>
   </main>
 
@@ -774,6 +814,112 @@ const NAWAWI_P5 = [
 </script>
 
 <script>
+// أسماء الله الحسنى — قائمة من إعداد صاحب التطبيق (٩٩ اسمًا كما زوّد بها)
+const ASMA=[
+{n:1,name:'الله'},
+{n:2,name:'الرحمن'},
+{n:3,name:'الرحيم'},
+{n:4,name:'الملك'},
+{n:5,name:'القدوس'},
+{n:6,name:'السلام'},
+{n:7,name:'المؤمن'},
+{n:8,name:'المهيمن'},
+{n:9,name:'العزيز'},
+{n:10,name:'الجبار'},
+{n:11,name:'المتكبر'},
+{n:12,name:'الخالق'},
+{n:13,name:'البارئ'},
+{n:14,name:'المصور'},
+{n:15,name:'الأول'},
+{n:16,name:'الآخر'},
+{n:17,name:'الظاهر'},
+{n:18,name:'الباطن'},
+{n:19,name:'المالك'},
+{n:20,name:'المليك'},
+{n:21,name:'الهادي'},
+{n:22,name:'السميع'},
+{n:23,name:'البصير'},
+{n:24,name:'الواسع'},
+{n:25,name:'المحيط'},
+{n:26,name:'علّام الغيوب'},
+{n:27,name:'الشاكر'},
+{n:28,name:'البر'},
+{n:29,name:'التواب'},
+{n:30,name:'الرؤوف'},
+{n:31,name:'الولي'},
+{n:32,name:'المولى'},
+{n:33,name:'الرب'},
+{n:34,name:'الخلاق'},
+{n:35,name:'القدير'},
+{n:36,name:'النصير'},
+{n:37,name:'الغني'},
+{n:38,name:'الحميد'},
+{n:39,name:'المجيد'},
+{n:40,name:'الحق'},
+{n:41,name:'المبين'},
+{n:42,name:'القوي'},
+{n:43,name:'المتين'},
+{n:44,name:'المنتقم'},
+{n:45,name:'العفو'},
+{n:46,name:'الغفور'},
+{n:47,name:'الحليم'},
+{n:48,name:'القريب'},
+{n:49,name:'المجيب'},
+{n:50,name:'الحي'},
+{n:51,name:'القيوم'},
+{n:52,name:'العلي'},
+{n:53,name:'العظيم'},
+{n:54,name:'الكبير'},
+{n:55,name:'المتعال'},
+{n:56,name:'اللطيف'},
+{n:57,name:'الخبير'},
+{n:58,name:'الوهاب'},
+{n:59,name:'الرزاق'},
+{n:60,name:'الحسيب'},
+{n:61,name:'الرقيب'},
+{n:62,name:'الشهيد'},
+{n:63,name:'المقيت'},
+{n:64,name:'الفتاح'},
+{n:65,name:'العليم'},
+{n:66,name:'الحكيم'},
+{n:67,name:'الجامع'},
+{n:68,name:'القادر'},
+{n:69,name:'المقتدر'},
+{n:70,name:'فاطر السموات والأرض'},
+{n:71,name:'عالم الغيب والشهادة'},
+{n:72,name:'بديع السموات والأرض'},
+{n:73,name:'نور السماوات والأرض'},
+{n:74,name:'الواحد'},
+{n:75,name:'الأحد'},
+{n:76,name:'الصمد'},
+{n:77,name:'القاهر'},
+{n:78,name:'القهار'},
+{n:79,name:'العالم'},
+{n:80,name:'الحكم'},
+{n:81,name:'الإله'},
+{n:82,name:'الحفي'},
+{n:83,name:'الودود'},
+{n:84,name:'الحافظ'},
+{n:85,name:'الحفيظ'},
+{n:86,name:'الغالب'},
+{n:87,name:'الكافي'},
+{n:88,name:'المنّان'},
+{n:89,name:'المستعان'},
+{n:90,name:'الوارث'},
+{n:91,name:'الكفيل'},
+{n:92,name:'الوكيل'},
+{n:93,name:'الغفار'},
+{n:94,name:'الكريم'},
+{n:95,name:'الشكور'},
+{n:96,name:'الأعلى'},
+{n:97,name:'الأكرم'},
+{n:98,name:'مالك الملك'},
+{n:99,name:'ذو الجلال والإكرام'},
+];
+
+</script>
+
+<script>
 // 05_app.js — منطق التطبيق
 (function(){
 'use strict';
@@ -818,12 +964,14 @@ function showView(v){
   $('#screen-home').classList.toggle('hidden',v!=='home');
   $('#screen-azkar').classList.toggle('hidden',v!=='azkar');
   $('#screen-nawawi').classList.toggle('hidden',v!=='nawawi');
+  $('#screen-asma').classList.toggle('hidden',v!=='asma');
 }
 $('#homeBtn').addEventListener('click',function(){showView('home')});
 $$('.home-card').forEach(function(c){
   c.addEventListener('click',function(){
     var go=c.dataset.go;
     if(go==='nawawi'){showView('nawawi')}
+    else if(go==='asma'){showView('asma')}
     else{
       part=go;
       $$('.seg-btn').forEach(function(x){x.classList.toggle('active',x.dataset.part===go)});
@@ -951,9 +1099,23 @@ $('#searchInput').addEventListener('input',function(e){
   tmr=setTimeout(function(){renderList(v)},120);
 });
 
+/* ---------- أسماء الله الحسنى ---------- */
+function renderAsma(){
+  var wrap=$('#asmaList');
+  if(wrap.children.length)return;
+  ASMA.forEach(function(a){
+    var d=document.createElement('div');
+    d.className='asma-card'+(a.n===1?' allah':'');
+    d.innerHTML='<span class="asma-num">'+AR(a.n)+'</span>'+
+      '<span class="asma-name">'+a.name+'</span>';
+    wrap.appendChild(d);
+  });
+}
+
 /* ---------- التشغيل ---------- */
 renderAzkar();
 renderList('');
+renderAsma();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('sw.js').catch(function(){});
