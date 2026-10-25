@@ -60,15 +60,14 @@ main{padding-bottom:112px}
   box-shadow:0 6px 18px rgba(8,55,32,.25);
 }
 .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.topnav{display:flex;gap:6px;margin-top:10px}
-.topnav .tab{
-  flex:1;flex-direction:row;justify-content:center;gap:8px;
-  padding:10px 4px;border-radius:12px;
-  color:rgba(255,255,255,.88);background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.18);
+.homebtn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;margin-top:10px;padding:14px 16px;border-radius:14px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  color:#fff;font-weight:900;font-size:calc(var(--ui)*1.05);
 }
-.topnav .tab svg{width:24px;height:24px}
-.topnav .tab.active{background:#fff;color:#0A5237;border-color:transparent}
+.homebtn svg{width:27px;height:27px}
+.homebtn:active{transform:scale(.98)}
 html[data-theme="dark"] .topbar{
   background:linear-gradient(135deg,#071B13,#0D2B20 62%,#10402C);
 }
@@ -307,20 +306,10 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
       </button>
     </div>
     </div>
-    <nav class="topnav" role="tablist">
-      <button class="tab active" data-view="home">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
-        <span>الرئيسية</span>
-      </button>
-      <button class="tab" data-view="azkar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="10.5" r="7" stroke-linecap="round" stroke-dasharray="0.1 2.9"/><path d="M12 17.5V21" stroke-linecap="round"/><circle cx="12" cy="21.6" r="1.1" fill="currentColor" stroke="none"/></svg>
-        <span>الأذكار</span>
-      </button>
-      <button class="tab" data-view="nawawi">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg>
-        <span>الأربعون</span>
-      </button>
-    </nav>
+    <button id="homeBtn" class="homebtn" aria-label="العودة إلى الرئيسية">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      <span>الرئيسية</span>
+    </button>
   </header>
 
   <main>
@@ -829,9 +818,8 @@ function showView(v){
   $('#screen-home').classList.toggle('hidden',v!=='home');
   $('#screen-azkar').classList.toggle('hidden',v!=='azkar');
   $('#screen-nawawi').classList.toggle('hidden',v!=='nawawi');
-  $$('.tab').forEach(function(b){b.classList.toggle('active',b.dataset.view===v)});
 }
-$$('.tab').forEach(function(b){b.addEventListener('click',function(){showView(b.dataset.view)})});
+$('#homeBtn').addEventListener('click',function(){showView('home')});
 $$('.home-card').forEach(function(c){
   c.addEventListener('click',function(){
     var go=c.dataset.go;
