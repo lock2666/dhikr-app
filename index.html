@@ -223,6 +223,44 @@ html[data-theme="dark"] .d-label{color:var(--ok)}
 .nav-btn:disabled{opacity:.35;cursor:default}
 .nav-btn.close-all{position:absolute;inset-inline-start:18px}
 
+/* ===== الصفحة الرئيسية ===== */
+.home-hero{text-align:center;padding:34px 10px 8px}
+.home-bism{font-family:'Amiri',serif;color:var(--gold);font-size:calc(var(--read)*.72);line-height:1.6}
+.home-title{font-weight:900;font-size:calc(var(--ui)*1.55);color:var(--ink);margin-top:4px}
+.home-sub{color:var(--ink2);font-size:calc(var(--ui)*.85);margin-top:6px}
+.home-cards{display:flex;flex-direction:column;gap:16px;margin-top:28px;padding-bottom:24px}
+.home-card{
+  display:flex;align-items:center;gap:18px;text-align:start;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:24px 22px;box-shadow:var(--shadow);color:var(--ink);width:100%;
+}
+.home-card:active{transform:scale(.99)}
+.home-ico{width:74px;height:74px;border-radius:24px;flex:none;display:flex;align-items:center;justify-content:center}
+.home-ico svg{width:38px;height:38px}
+.home-ico.sun{background:var(--gold-soft);color:var(--gold-ink)}
+.home-ico.moon{background:#1C2B4A;color:#8FB0EC}
+html[data-theme="dark"] .home-ico.moon{background:#101A2E;color:#9DBCF5}
+.home-ico.book{background:var(--primary-soft);color:var(--primary)}
+html[data-theme="dark"] .home-ico.book{color:var(--ok)}
+.home-card-title{font-weight:900;font-size:calc(var(--ui)*1.2);display:block;line-height:1.6}
+.home-card-sub{color:var(--ink2);font-size:calc(var(--ui)*.8);display:block;margin-top:4px}
+.home-arrow{margin-inline-start:auto;color:var(--ink2);flex:none;width:26px;height:26px}
+
+/* ===== أزرار تكبير الخط العائمة ===== */
+.zoom-dock{
+  position:fixed;bottom:calc(88px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  z-index:90;display:flex;align-items:center;gap:6px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;
+  box-shadow:var(--shadow);padding:7px;
+}
+.zoom-btn{
+  min-width:58px;min-height:58px;border-radius:50%;border:0;
+  background:var(--primary);color:#fff;font-weight:900;font-size:32px;line-height:1;
+  display:flex;align-items:center;justify-content:center;padding:0;
+}
+html[data-theme="dark"] .zoom-btn{color:#06251A}
+.zoom-btn:active{transform:scale(.92)}
+
 /* ===== الشريط السفلي ===== */
 .tabbar{
   position:fixed;bottom:0;inset-inline:0;z-index:50;
@@ -257,8 +295,6 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
       </div>
     </div>
     <div class="tools">
-      <button id="fontMinus" class="toolbtn" aria-label="تصغير الخط">أ−</button>
-      <button id="fontPlus" class="toolbtn" aria-label="تكبير الخط">أ+</button>
       <button id="themeBtn" class="toolbtn" aria-label="تبديل الوضع الليلي والنهاري">
         <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" class="hidden"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -267,8 +303,34 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
   </header>
 
   <main>
+    <!-- الصفحة الرئيسية -->
+    <section id="screen-home" class="container wrap">
+      <div class="home-hero">
+        <div class="home-bism">بِسْمِ اللهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <div class="home-title">الذِّكْر</div>
+        <div class="home-sub">أذكار الصباح والمساء والأربعون النووية</div>
+      </div>
+      <div class="home-cards">
+        <button class="home-card" data-go="morning">
+          <span class="home-ico sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
+          <span style="min-width:0"><span class="home-card-title">أذكار الصباح</span><span class="home-card-sub">١٧ ذكرًا بعدّادٍ يوميّ</span></span>
+          <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="home-card" data-go="evening">
+          <span class="home-ico moon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+          <span style="min-width:0"><span class="home-card-title">أذكار المساء</span><span class="home-card-sub">١٩ ذكرًا بعدّادٍ يوميّ</span></span>
+          <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="home-card" data-go="nawawi">
+          <span class="home-ico book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span>
+          <span style="min-width:0"><span class="home-card-title">الأربعون النووية</span><span class="home-card-sub">٤٢ حديثًا مع شرحٍ موجز</span></span>
+          <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+    </section>
+
     <!-- قسم الأذكار -->
-    <section id="screen-azkar" class="container wrap">
+    <section id="screen-azkar" class="container wrap hidden">
       <div class="seg" role="tablist">
         <button class="seg-btn active" data-part="morning" role="tab">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -318,9 +380,19 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
     </div>
   </div>
 
+  <!-- أزرار تكبير الخط وتصغيره -->
+  <div class="zoom-dock" role="toolbar" aria-label="تكبير الخط وتصغيره">
+    <button id="fontMinus" class="zoom-btn" aria-label="تصغير الخط">−</button>
+    <button id="fontPlus" class="zoom-btn" aria-label="تكبير الخط">+</button>
+  </div>
+
   <!-- شريط التنقل السفلي -->
   <nav class="tabbar">
-    <button class="tab active" data-view="azkar">
+    <button class="tab active" data-view="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      <span>الرئيسية</span>
+    </button>
+    <button class="tab" data-view="azkar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="10.5" r="7" stroke-linecap="round" stroke-dasharray="0.1 2.9"/><path d="M12 17.5V21" stroke-linecap="round"/><circle cx="12" cy="21.6" r="1.1" fill="currentColor" stroke="none"/></svg>
       <span>الأذكار</span>
     </button>
@@ -752,11 +824,24 @@ $('#themeBtn').addEventListener('click',function(){theme=(theme==='dark'?'light'
 
 /* ---------- التنقل بين الأقسام ---------- */
 function showView(v){
+  $('#screen-home').classList.toggle('hidden',v!=='home');
   $('#screen-azkar').classList.toggle('hidden',v!=='azkar');
   $('#screen-nawawi').classList.toggle('hidden',v!=='nawawi');
   $$('.tab').forEach(function(b){b.classList.toggle('active',b.dataset.view===v)});
 }
 $$('.tab').forEach(function(b){b.addEventListener('click',function(){showView(b.dataset.view)})});
+$$('.home-card').forEach(function(c){
+  c.addEventListener('click',function(){
+    var go=c.dataset.go;
+    if(go==='nawawi'){showView('nawawi')}
+    else{
+      part=go;
+      $$('.seg-btn').forEach(function(x){x.classList.toggle('active',x.dataset.part===go)});
+      renderAzkar();
+      showView('azkar');
+    }
+  });
+});
 
 /* ---------- الأذكار ---------- */
 var part='morning';
