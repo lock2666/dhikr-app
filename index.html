@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الذِّكْر — أذكار الصباح والمساء والأربعون النووية</title>
+<meta name="description" content="تطبيق إسلامي: أذكار الصباح والمساء كاملة، والأربعون النووية مع شرح موجز من الشروح المعتمدة، بخط كبير ومظهر ليلي/نهاري، يعمل دون إنترنت، جاهز للإضافة إلى شاشة iPad الرئيسية">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0B4E33" id="metaTheme">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="الذكر">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fs:1.15;
+  --bg:#F5F2E9; --card:#FFFFFF; --card2:#FBF9F1; --line:#E5DFCB;
+  --ink:#20291F; --ink2:#5D6B5C;
+  --primary:#0E6B47; --primary-strong:#0A5237; --primary-soft:#E3F1E9;
+  --gold:#A5771B; --gold-ink:#7A5A11; --gold-soft:#F4E9CC;
+  --ok:#178F5E;
+  --shadow:0 8px 24px rgba(30,60,42,.10);
+  --radius:18px;
+  --read:calc(31px * var(--fs));
+  --ui:calc(17px * var(--fs));
+}
+html[data-theme="dark"]{
+  --bg:#0C1410; --card:#15211B; --card2:#192822; --line:#26382E;
+  --ink:#EAF2EC; --ink2:#9CB0A4;
+  --primary:#3FC087; --primary-strong:#2FA97A; --primary-soft:#123027;
+  --gold:#D9BB62; --gold-ink:#C7A64C; --gold-soft:#282213;
+  --ok:#5CDCA6;
+  --shadow:0 10px 28px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Cairo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:var(--ui);line-height:1.9;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+button{font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none}
+.hidden{display:none!important}
+.wrap{max-width:800px;margin-inline:auto;padding:0 18px}
+main{padding-bottom:112px}
+
+/* ===== الشريط العلوي ===== */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:calc(12px + env(safe-area-inset-top)) 18px 12px;
+  background:linear-gradient(135deg,#083720,#0E6B47 62%,#12855B);
+  color:#fff;border-bottom:1px solid rgba(217,187,98,.4);
+  box-shadow:0 6px 18px rgba(8,55,32,.25);
+}
+html[data-theme="dark"] .topbar{
+  background:linear-gradient(135deg,#071B13,#0D2B20 62%,#10402C);
+}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand svg{flex:none;color:#EBC771}
+.brand-name{font-weight:900;font-size:calc(var(--ui)*1.22);line-height:1.2;letter-spacing:.5px}
+.brand-sub{font-size:calc(var(--ui)*.7);opacity:.85;font-weight:600}
+.tools{display:flex;gap:8px;align-items:center}
+.toolbtn{
+  min-width:48px;min-height:44px;border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.12);color:#fff;border-radius:12px;
+  font-weight:800;font-size:calc(var(--ui)*.95);
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.toolbtn:active{transform:scale(.96)}
+.toolbtn svg{width:24px;height:24px}
+
+/* ===== حاوية الأقسام ===== */
+.container{padding-top:18px}
+
+/* ===== تبويبات صباح/مساء ===== */
+.seg{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:var(--shadow)}
+.seg-btn{
+  flex:1;border:0;background:transparent;color:var(--ink2);
+  font-size:var(--ui);font-weight:800;padding:13px 8px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.seg-btn.active{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(14,107,71,.3)}
+html[data-theme="dark"] .seg-btn.active{color:#05231A}
+
+/* ===== بطاقة التقدم ===== */
+.progress-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin-top:14px;box-shadow:var(--shadow)}
+.prog-info{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.prog-text{font-weight:900;font-size:calc(var(--ui)*.95);color:var(--primary)}
+html[data-theme="dark"] .prog-text{color:var(--ok)}
+.mini-btn{border:1px solid var(--line);background:var(--card2);color:var(--ink);padding:8px 16px;border-radius:10px;font-size:calc(var(--ui)*.82);font-weight:700}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--primary-strong),var(--primary));transition:width .3s ease}
+html[data-theme="dark"] .bar i{background:linear-gradient(90deg,#1C8F63,#3FC087)}
+
+/* ===== سطر البسملة ===== */
+.bismillah{
+  text-align:center;font-family:'Amiri',serif;color:var(--gold);
+  font-size:calc(var(--read)*.86);line-height:1.5;margin:22px 4px 6px;
+}
+.bismillah::after{content:"";display:block;width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:8px auto 0}
+
+/* ===== بطاقات الأذكار ===== */
+.z-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;box-shadow:var(--shadow);margin-top:16px;position:relative;overflow:hidden;
+}
+.z-card::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--primary),var(--gold))}
+.z-card.done{border-color:var(--ok)}
+.z-card.done::before{background:var(--ok)}
+.z-tags{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:calc(var(--ui)*.72);font-weight:700;color:var(--ink2);
+  background:var(--card2);border:1px solid var(--line);padding:5px 12px;border-radius:999px;
+}
+.chip.gold{color:var(--gold-ink);background:var(--gold-soft);border-color:transparent}
+html[data-theme="dark"] .chip.gold{color:var(--gold)}
+.z-text{font-family:'Amiri','Geeza Pro',serif;font-size:var(--read);line-height:2.05;margin:14px 0 4px}
+.z-note{font-size:calc(var(--ui)*.8);color:var(--ink2);margin-top:10px;line-height:1.9}
+.cnt-row{display:flex;align-items:center;gap:16px;margin-top:18px}
+.count-badge{
+  font-weight:900;font-size:calc(var(--ui)*1.0);
+  background:var(--primary-soft);color:var(--primary);
+  padding:9px 18px;border-radius:999px;
+}
+html[data-theme="dark"] .count-badge{color:var(--ok)}
+.bigbtn{
+  width:76px;height:76px;border-radius:50%;border:0;
+  background:var(--primary);color:#fff;font-weight:900;font-size:30px;
+  display:flex;align-items:center;justify-content:center;flex:none;
+  box-shadow:0 10px 20px rgba(14,107,71,.35);
+  transition:transform .12s ease, background .2s ease;
+}
+html[data-theme="dark"] .bigbtn{color:#06251A}
+.bigbtn:active{transform:scale(.94)}
+.bigbtn.done{background:var(--ok)}
+.acts{display:flex;align-items:center;gap:12px;margin-inline-start:auto}
+.cnt-minus{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--ink2);font-size:26px;font-weight:800}
+
+/* ===== الأربعون: البحث والقائمة ===== */
+.searchrow{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;box-shadow:var(--shadow)}
+.searchrow svg{color:var(--ink2);flex:none}
+.searchrow input{flex:1;border:0;outline:none;background:transparent;color:var(--ink);font-family:inherit;font-size:var(--ui)}
+.intro-note{
+  background:var(--gold-soft);border:1px solid var(--gold);border-radius:14px;
+  padding:14px 16px;margin-top:14px;font-size:calc(var(--ui)*.78);color:var(--ink2);line-height:1.9;
+}
+html[data-theme="dark"] .intro-note{color:#D8C990}
+.h-item{
+  width:100%;display:flex;align-items:center;gap:14px;text-align:start;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;box-shadow:var(--shadow);margin-top:14px;color:var(--ink);
+}
+.h-item:active{transform:scale(.995)}
+.h-num{
+  min-width:52px;height:52px;border-radius:16px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--gold-soft);color:var(--gold-ink);
+  font-weight:900;font-size:22px;border:1px solid transparent;
+}
+html[data-theme="dark"] .h-num{color:var(--gold)}
+.h-read{background:var(--primary-soft);color:var(--primary);border-radius:16px}
+.h-title{font-weight:800;font-size:calc(var(--ui)*1.02);display:block;line-height:1.7}
+.h-src{font-size:calc(var(--ui)*.75);color:var(--ink2);display:block;margin-top:2px}
+.no-results{text-align:center;color:var(--ink2);padding:34px 10px;font-size:calc(var(--ui)*.9)}
+
+/* ===== صفحة عرض الحديث ===== */
+.detail{position:fixed;inset:0;background:var(--bg);z-index:80;display:flex;flex-direction:column}
+.detail-top{
+  display:flex;align-items:center;gap:12px;
+  padding:calc(12px + env(safe-area-inset-top)) 18px 12px;
+  background:var(--card);border-bottom:1px solid var(--line);
+}
+.iconbtn{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);background:var(--card2);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+.detail-title{font-weight:900;font-size:calc(var(--ui)*1.0)}
+.detail-body{flex:1;overflow-y:auto;padding:22px 18px 44px;-webkit-overflow-scrolling:touch}
+.detail-inner{max-width:760px;margin-inline:auto}
+.d-badge{
+  display:inline-block;background:var(--gold-soft);color:var(--gold-ink);
+  font-weight:900;font-size:calc(var(--ui)*.85);padding:8px 18px;border-radius:999px;
+}
+html[data-theme="dark"] .d-badge{color:var(--gold)}
+.d-rawi{color:var(--ink2);font-size:calc(var(--ui)*.85);margin:12px 0 0}
+.d-text{
+  font-family:'Amiri','Geeza Pro',serif;font-size:var(--read);line-height:2.2;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:24px 22px;box-shadow:var(--shadow);margin-top:16px;
+}
+.d-label{
+  display:flex;align-items:center;gap:10px;margin:26px 0 12px;
+  font-weight:900;color:var(--primary);font-size:calc(var(--ui)*.95);
+}
+html[data-theme="dark"] .d-label{color:var(--ok)}
+.d-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--primary),transparent)}
+.d-expl{
+  font-size:calc(var(--ui)*1.0);line-height:2.1;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;box-shadow:var(--shadow);
+}
+.d-chip{margin-top:14px}
+.d-src{
+  margin-top:14px;font-size:calc(var(--ui)*.8);color:var(--ink2);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.detail-nav{
+  display:flex;gap:10px;justify-content:space-between;align-items:center;
+  padding:12px 18px calc(14px + env(safe-area-inset-bottom));
+  background:var(--card);border-top:1px solid var(--line);
+}
+.nav-btn{
+  min-width:140px;min-height:58px;border-radius:14px;border:1px solid var(--line);
+  background:var(--card2);color:var(--ink);font-size:var(--ui);font-weight:800;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.nav-btn:disabled{opacity:.35;cursor:default}
+.nav-btn.close-all{position:absolute;inset-inline-start:18px}
+
+/* ===== الشريط السفلي ===== */
+.tabbar{
+  position:fixed;bottom:0;inset-inline:0;z-index:50;
+  display:flex;background:var(--card);border-top:1px solid var(--line);
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  box-shadow:0 -6px 18px rgba(20,40,30,.08);
+}
+.tab{
+  flex:1;border:0;background:transparent;color:var(--ink2);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 4px;border-radius:14px;font-weight:800;font-size:calc(var(--ui)*.8);
+}
+.tab.active{color:var(--primary)}
+html[data-theme="dark"] .tab.active{color:var(--ok)}
+.tab svg{width:27px;height:27px}
+
+@media (min-width:700px){
+  .wrap{padding:0 26px}
+}
+noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <div>
+        <div class="brand-name">الذِّكْر</div>
+        <div class="brand-sub">أذكار الصباح والمساء والأربعون النووية</div>
+      </div>
+    </div>
+    <div class="tools">
+      <button id="fontMinus" class="toolbtn" aria-label="تصغير الخط">أ−</button>
+      <button id="fontPlus" class="toolbtn" aria-label="تكبير الخط">أ+</button>
+      <button id="themeBtn" class="toolbtn" aria-label="تبديل الوضع الليلي والنهاري">
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" class="hidden"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- قسم الأذكار -->
+    <section id="screen-azkar" class="container wrap">
+      <div class="seg" role="tablist">
+        <button class="seg-btn active" data-part="morning" role="tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          أذكار الصباح
+        </button>
+        <button class="seg-btn" data-part="evening" role="tab">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          أذكار المساء
+        </button>
+      </div>
+      <div class="progress-card">
+        <div class="prog-info">
+          <span class="prog-text" id="progText"></span>
+          <button id="resetBtn" class="mini-btn">إعادة البَدء</button>
+        </div>
+        <div class="bar"><i id="progFill"></i></div>
+      </div>
+      <div class="bismillah">بِسْمِ اللهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+      <div id="adkharList"></div>
+    </section>
+
+    <!-- قسم الأربعين -->
+    <section id="screen-nawawi" class="container wrap hidden">
+      <div class="searchrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="ابحث في الأربعين النووية…" autocomplete="off">
+      </div>
+      <div class="intro-note">
+        <strong>المصادر:</strong> النصوص من «الأربعون النووية» للإمام النووي (ت ٦٧٦هـ)، والتخريج عن الصحيحين وغيرهما. والشرحُ الموجز تلخيصٌ من الشروح المعتمدة: «مطالب من مقاصد الأربعين» لابن دقيق العيد (ت ٧٠٢هـ)، و«شرح الأربعين النووية» لعبد المحسن العبّاد (ت ١٤٤٣هـ)، وشرح النووي نفسه.
+      </div>
+      <div id="hadithList"></div>
+    </section>
+  </main>
+
+  <!-- صفحة تفاصيل الحديث -->
+  <div id="detail" class="detail hidden" role="dialog" aria-modal="true">
+    <div class="detail-top">
+      <button id="closeDetail" class="iconbtn" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="24" height="24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="detail-title" id="detailTitle">الأربعون النووية</div>
+    </div>
+    <div class="detail-body"><div class="detail-inner" id="detailBody"></div></div>
+    <div class="detail-nav">
+      <button id="prevH" class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="22" height="22"><path d="M15 18l-6-6 6-6"/></svg> السابق</button>
+      <button id="nextH" class="nav-btn">التالي <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="22" height="22"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- شريط التنقل السفلي -->
+  <nav class="tabbar">
+    <button class="tab active" data-view="azkar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="10.5" r="7" stroke-linecap="round" stroke-dasharray="0.1 2.9"/><path d="M12 17.5V21" stroke-linecap="round"/><circle cx="12" cy="21.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+      <span>الأذكار</span>
+    </button>
+    <button class="tab" data-view="nawawi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg>
+      <span>الأربعون</span>
+    </button>
+  </nav>
+
+</div>
+<noscript>يجب تفعيل JavaScript لتشغيل التطبيق.</noscript>
+
+<script>
+// بيانات أذكار الصباح والمساء — حصن المسلم وغيره من الكتب المعتمدة
+const ADHKAR = {
+morning:[
+ {id:'m1', text:'أَعُوذُ باللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ. ﴿اللهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَؤُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾', count:1, src:'سورة البقرة: ٢٥٥ — عن أبي هريرة؛ أخرجه ابن السنّي في «عمل اليوم والليلة»', note:'وورد: من قرأها حين يُصبح أُجِيرَ من الجنِّ حتى يمسِيّ.'},
+ {id:'m2', text:'﴿قُلْ هُوَ اللهُ أَحَدٌ، اللهُ الصَّمَدُ، لَمْ يَلِدْ وَلَمْ يُولَدْ، وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ﴾. ﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ، مِنْ شَرِّ مَا خَلَقَ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ، وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾. ﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ، مَلِكِ النَّاسِ، إِلَٰهِ النَّاسِ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ، الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ، مِنَ الْجِنَّةِ وَالنَّاسِ﴾', count:3, src:'سورة الإخلاص وسورة الفلق وسورة الناس — عن عائشة؛ رواه أبو داود (5082) والترمذي (3575)', note:'قال ﷺ: «إقرأ سورة الإخلاص والمعوذتين ثلاث مرات حين تُصبح وحين تُمسى، تُكفيك من كل شيء».'},
+ {id:'m3', text:'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ. رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ. رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.', count:1, src:'عن حمزة بن عمير الأسلمي؛ رواه مسلم', note:''},
+ {id:'m4', text:'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.', count:1, src:'عن ابن عمر؛ رواه الترمذي (3391) وغيره', note:''},
+ {id:'m5', text:'كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ، حَبِيبَتَانِ إِلَى الرَّحْمَنِ: سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ.', count:3, src:'عن أبي هريرة؛ رواه البخاري (6682) ومسلم (2694)', note:''},
+ {id:'m6', text:'سُبْحَانَ اللهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.', count:3, src:'رواه مسلم', note:''},
+ {id:'m7', text:'اللَّهُمَّ إِنِّي أَصْبَحْتُ أَشْهَدُكَ، وَأَشْهَدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتِكَ وَجَمِيعَ خَلْقِكَ: أَنَّكَ أَنْتَ اللهُ لَا إِلَٰهَ إِلَّا أَنْتَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.', count:4, src:'رواه أبو داود (5071) والترمذي وغيرهما؛ صححه الألباني', note:''},
+ {id:'m8', text:'اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.', count:1, src:'رواه ابن السنّي في «عمل اليوم والليلة»؛ حسّنه ابن حجر (بل: حسنه)', note:''},
+ {id:'m9', text:'لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.', count:10, src:'عن عائشة؛ رواه مسلم — وعن ابن عمر: أخرجه أحمد', note:'وورد: من قالها مرةً كان له عدل عشر؛ ومن قالها عشر مرات كان له عدل مائة عمل، وصيته عشر رقايم.'},
+ {id:'m10', text:'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَٰهَ إِلَّا أَنْتَ.', count:3, src:'عن ابن عمر؛ رواه أبو داود وغيره', note:'وورد: من قالها ثلاثاً لم يصبُهْ به شَرٌّ.'},
+ {id:'m11', text:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَٰهَ إِلَّا أَنْتَ.', count:3, src:'رواه أحمد وأبو داود (5090) والنسائي', note:''},
+ {id:'m12', text:'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ.', count:1, src:'(سيد الاستغفار) — عن شدد بن أوس؛ رواه البخاري (6306)', note:'وورد: من قالها فمات من يومه دخلةَ الجنة (رواه الترمذي وغيره).'},
+ {id:'m13', text:'رَضِيتُ باللهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا.', count:3, src:'عن لحيانة أبي مالك الأشجعي؛ رواه أبو داود (5072) والترمذي وغيرهما', note:'وورد: (كان حقًّا على الله أن يَرْضِيه).'},
+ {id:'m14', text:'بِسْمِ اللهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ.', count:3, src:'عن خولة بنت حكيم؛ رواه أبو داود (5088) والترمذي (3388) وغيرهما؛ صححه الألباني', note:'وورد: من قالها ثلاثاً لم يصبُهْ بلاء.'},
+ {id:'m15', text:'اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.', count:1, src:'رواه أبو داود (5080) والترمذي وغيرهما', note:''},
+ {id:'m16', text:'يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.', count:1, src:'رواه الحاكم في «المستدرك» وغيره؛ حسنه العلماء', note:''},
+ {id:'m17', text:'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوَعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.', count:1, src:'عن ابن عمر؛ رواه أبو داود (5074) وغيره', note:''}
+],
+evening:[
+ {id:'e1', text:'أَعُوذُ باللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ. ﴿اللهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَؤُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾', count:2, src:'سورة البقرة: ٢٥٥ — عن أبي هريرة؛ أخرجه ابن السنّي في «عمل اليوم والليلة»', note:'وورد: من قرأها حين يَمْسَى أُجِيرَ من الجنِّ حتى يُصبح.'},
+ {id:'e2', text:'﴿قُلْ هُوَ اللهُ أَحَدٌ، اللهُ الصَّمَدُ، لَمْ يَلِدْ وَلَمْ يُولَدْ، وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ﴾. ﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ، مِنْ شَرِّ مَا خَلَقَ، وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ، وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ، وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾. ﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ، مَلِكِ النَّاسِ، إِلَٰهِ النَّاسِ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ، الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ، مِنَ الْجِنَّةِ وَالنَّاسِ﴾', count:3, src:'سورة الإخلاص وسورة الفلق وسورة الناس — عن عائشة؛ رواه أبو داود (5082) والترمذي (3575)', note:'قال ﷺ: «إقرأ سورة الإخلاص والمعوذتين ثلاث مرات حين تُصبح وحين تُمسى، تُكفيك من كل شيء».'},
+ {id:'e3', text:'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا. رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ. رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.', count:1, src:'رواه مسلم وغيره', note:''},
+ {id:'e4', text:'اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ.', count:1, src:'رواه الترمذي وغيره', note:''},
+ {id:'e5', text:'كَلِمَتَانِ خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ، حَبِيبَتَانِ إِلَى الرَّحْمَنِ: سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ.', count:3, src:'رواه البخاري (6682) ومسلم (2694)', note:''},
+ {id:'e6', text:'سُبْحَانَ اللهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ.', count:3, src:'رواه مسلم', note:''},
+ {id:'e7', text:'اللَّهُمَّ إِنِّي أَمْسَيْتُ أَشْهَدُكَ، وَأَشْهَدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتِكَ وَجَمِيعَ خَلْقِكَ: أَنَّكَ أَنْتَ اللهُ لَا إِلَٰهَ إِلَّا أَنْتَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ.', count:4, src:'رواه أبو داود (5071) والترمذي وغيرهما؛ صححه الألباني', note:''},
+ {id:'e8', text:'اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.', count:1, src:'رواه ابن السنّي في «عمل اليوم والليلة»', note:''},
+ {id:'e9', text:'لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.', count:10, src:'عن عائشة؛ رواه مسلم — وعن ابن عمر: أخرجه أحمد', note:'وورد: من قالها مرةً كان له عدل عشر؛ ومن قالها عشر مرات كان له عدل مائة عمل، وصيته عشر رقايم.'},
+ {id:'e10', text:'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَٰهَ إِلَّا أَنْتَ.', count:3, src:'عن ابن عمر؛ رواه أبو داود وغيره', note:'وورد: من قالها ثلاثاً لم يصبُهْ به شَرٌّ.'},
+ {id:'e11', text:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَٰهَ إِلَّا أَنْتَ.', count:3, src:'رواه أحمد وأبو داود (5090) والنسائي', note:''},
+ {id:'e12', text:'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ.', count:1, src:'(سيد الاستغفار) — رواه البخاري (6306)', note:'وورد: من قالها فمات من يومه دخلةَ الجنة (رواه الترمذي وغيره).'},
+ {id:'e13', text:'رَضِيتُ باللهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا.', count:3, src:'رواه أبو داود (5072) والترمذي وغيرهما', note:'وورد: (كان حقًّا على الله أن يَرْضِيه).'},
+ {id:'e14', text:'بِسْمِ اللهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ.', count:3, src:'رواه أبو داود (5088) والترمذي (3388) وغيرهما؛ صححه الألباني', note:'وورد: من قالها ثلاثاً لم يصبُهْ بلاء.'},
+ {id:'e15', text:'حَسْبِيَ اللهُ لَا إِلَٰهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ.', count:7, src:'عن جابر بن عبد الله؛ رواه أبو داود (5083) وغيره', note:'وورد: من قالها سبع مرات كفاه الله ما أَهَمَّه من هموم الدنيا والآخرة.'},
+ {id:'e16', text:'اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسِي أَوْ أَجُرَّهُ إِلَى مُسْلِمٍ.', count:1, src:'رواه أبو داود (5080) والترمذي وغيرهما', note:''},
+ {id:'e17', text:'يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ.', count:1, src:'رواه الحاكم في «المستدرك» وغيره؛ حسنه العلماء', note:''},
+ {id:'e18', text:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ كُلِّ دَابَّةٍ أَنْتَ آخِذٌ بِنَاصِيتِهَا، إِنَّ رَبِّي عَلَى صِرَاطٍ مُسْتَقِيمٍ.', count:1, src:'عن جابر؛ رواه مسلم (2725)', note:'(الْآخِذُ بِنَاصِيتِهَا: ضَابطٌ لها مُسَخِّرٌ لها)'},
+ {id:'e19', text:'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوَعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ، وَمِنْ خَلْفِي، وَعَنْ يَمِينِي، وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي.', count:1, src:'رواه أبو داود (5074) وغيره', note:''}
+]
+};
+
+</script>
+
+<script>
+// الأربعون النووية — ١ إلى ٨
+// t تُحقن آلياً من مصدر sunnah.com (اكتمالاً وتشكيلاً للنص الافتراضي)
+const NAWAWI_P1 = [
+{n:1,
+ o:'إنَّما الأعمال بالنِّيَّات',
+ r:'عمر بن الخطاب رضي الله عنه',
+ s:'رواه البخاري (1) ومسلم (1907)',
+ t:'عَنْ أَمِيرِ الْمُؤْمِنِينَ أَبِي حَفْصٍ عُمَرَ بْنِ الْخَطَّابِ رَضِيَ اللهُ عَنْهُ قَالَ: سَمِعْتُ رَسُولَ اللَّهِ صلى الله عليه وسلم يَقُولُ: " إنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى، فَمَنْ كَانَتْ هِجْرَتُهُ إلَى اللَّهِ وَرَسُولِهِ فَهِجْرَتُهُ إلَى اللَّهِ وَرَسُولِهِ، وَمَنْ كَانَتْ هِجْرَتُهُ لِدُنْيَا يُصِيبُهَا أَوْ امْرَأَةٍ يَنْكِحُهَا فَهِجْرَتُهُ إلَى مَا هَاجَرَ إلَيْهِ". رَوَاهُ إِمَامَا الْمُحَدِّثِينَ أَبُو عَبْدِ اللهِ مُحَمَّدُ بنُ إِسْمَاعِيل بن إِبْرَاهِيم بن الْمُغِيرَة بن بَرْدِزبَه الْبُخَارِيُّ الْجُعْفِيُّ رقم:1.، وَأَبُو الْحُسَيْنِ مُسْلِمٌ بنُ الْحَجَّاج بن مُسْلِم الْقُشَيْرِيُّ النَّيْسَابُورِيُّ رقم:1907. رَضِيَ اللهُ عَنْهُمَا فِي "صَحِيحَيْهِمَا" اللذَينِ هُمَا أَصَحُّ الْكُتُبِ الْمُصَنَّفَةِ.',
+ x:'العبرة في العمل بنِيَّة صاحبه لا بظاهره: فما قُصِد به وجه الله ورسوله كان في الميزان، وما قُصِد به طلب دنيا أو زواج فلا ثواب فيه إلا ما نُوي لله. وقد قسَّم ابن دقيق العيد الأعمال بحسب النِّيَّة إلى: عملٍ لله فأجرة، وعملٍ لغير الله فلا أجرة، وما اجتمع فيه الاثنان فأجرة بقدر ما نُوي لله.'
+},
+{n:2,
+ o:'حديث جِبريل',
+ r:'عمر بن الخطاب رضي الله عنه',
+ s:'رواه مسلم (8)',
+ t:'عَنْ عُمَرَ رَضِيَ اللهُ عَنْهُ أَيْضًا قَالَ: " بَيْنَمَا نَحْنُ جُلُوسٌ عِنْدَ رَسُولِ اللَّهِ صلى الله عليه و سلم ذَاتَ يَوْمٍ، إذْ طَلَعَ عَلَيْنَا رَجُلٌ شَدِيدُ بَيَاضِ الثِّيَابِ، شَدِيدُ سَوَادِ الشَّعْرِ، لَا يُرَى عَلَيْهِ أَثَرُ السَّفَرِ، وَلَا يَعْرِفُهُ مِنَّا أَحَدٌ. حَتَّى جَلَسَ إلَى النَّبِيِّ صلى الله عليه و سلم . فَأَسْنَدَ رُكْبَتَيْهِ إلَى رُكْبَتَيْهِ، وَوَضَعَ كَفَّيْهِ عَلَى فَخِذَيْهِ، وَقَالَ: يَا مُحَمَّدُ أَخْبِرْنِي عَنْ الْإِسْلَامِ. فَقَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم الْإِسْلَامُ أَنْ تَشْهَدَ أَنْ لَا إلَهَ إلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ، وَتُقِيمَ الصَّلَاةَ، وَتُؤْتِيَ الزَّكَاةَ، وَتَصُومَ رَمَضَانَ، وَتَحُجَّ الْبَيْتَ إنْ اسْتَطَعْت إلَيْهِ سَبِيلًا. قَالَ: صَدَقْت . فَعَجِبْنَا لَهُ يَسْأَلُهُ وَيُصَدِّقُهُ! قَالَ: فَأَخْبِرْنِي عَنْ الْإِيمَانِ. قَالَ: أَنْ تُؤْمِنَ بِاَللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ وَالْيَوْمِ الْآخِرِ، وَتُؤْمِنَ بِالْقَدَرِ خَيْرِهِ وَشَرِّهِ. قَالَ: صَدَقْت. قَالَ: فَأَخْبِرْنِي عَنْ الْإِحْسَانِ. قَالَ: أَنْ تَعْبُدَ اللَّهَ كَأَنَّك تَرَاهُ، فَإِنْ لَمْ تَكُنْ تَرَاهُ فَإِنَّهُ يَرَاك. قَالَ: فَأَخْبِرْنِي عَنْ السَّاعَةِ. قَالَ: مَا الْمَسْئُولُ عَنْهَا بِأَعْلَمَ مِنْ السَّائِلِ. قَالَ: فَأَخْبِرْنِي عَنْ أَمَارَاتِهَا؟ قَالَ: أَنْ تَلِدَ الْأَمَةُ رَبَّتَهَا، وَأَنْ تَرَى الْحُفَاةَ الْعُرَاةَ الْعَالَةَ رِعَاءَ الشَّاءِ يَتَطَاوَلُونَ فِي الْبُنْيَانِ. ثُمَّ انْطَلَقَ، فَلَبِثْتُ مَلِيًّا، ثُمَّ قَالَ: يَا عُمَرُ أَتَدْرِي مَنْ السَّائِلُ؟. ‫‬قُلْتُ: اللَّهُ وَرَسُولُهُ أَعْلَمُ. قَالَ: فَإِنَّهُ جِبْرِيلُ أَتَاكُمْ يُعَلِّمُكُمْ دِينَكُمْ ". رَوَاهُ مُسْلِمٌ. .',
+ x:'حديث جامع: عرَّف الإسلام بأركانه الخمسة، والإيمان فروعه الستة (القدر خيره وشرَّه آخرُها)، والإحسان وهو عبادة الله كأنك تراه. وسُئل عن الساعة فلم يُحدَّد لها زمن لأن لا يعلمها إلا الله، وذُكرت بعض أشراتها. وسُمِّي «حديث جِبريل» لأنه جاء في هيئة رجل ليعلِّم المسلمين دينهم.'
+},
+{n:3,
+ o:'بُني الإسلام على خمس',
+ r:'عبد الله بن عمر رضي الله عنهما',
+ s:'رواه البخاري (8) ومسلم (16)',
+ t:'عَنْ أَبِي عَبْدِ الرَّحْمَنِ عَبْدِ اللَّهِ بْنِ عُمَرَ بْنِ الْخَطَّابِ رَضِيَ اللَّهُ عَنْهُمَا قَالَ: سَمِعْت رَسُولَ اللَّهِ صلى الله عليه و سلم يَقُولُ: " بُنِيَ الْإِسْلَامُ عَلَى خَمْسٍ: شَهَادَةِ أَنْ لَا إلَهَ إلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ، وَإِقَامِ الصَّلَاةِ، وَإِيتَاءِ الزَّكَاةِ، وَحَجِّ الْبَيْتِ، وَصَوْمِ رَمَضَانَ". رَوَاهُ الْبُخَارِيُّ. ، وَمُسْلِمٌ.',
+ x:'الدِّينُ كلُّه يدور على خمسة: الشهادتان، وإقام الصلاة، وإيتاء الزكاة، وصوم رمضان، وحج البيت لمن استطاع؛ فمن أتمَّها إخلاصاً فقد قام على أركان الإسلام.'
+},
+{n:4,
+ o:'مراحل خَلْق الإنسان في البطن',
+ r:'عبد الله بن مسعود رضي الله عنه',
+ s:'رواه البخاري (3208) ومسلم (2645)',
+ t:'عَنْ أَبِي عَبْدِ الرَّحْمَنِ عَبْدِ اللَّهِ بْنِ مَسْعُودٍ رَضِيَ اللهُ عَنْهُ قَالَ: حَدَّثَنَا رَسُولُ اللَّهِ صلى الله عليه و سلم -وَهُوَ الصَّادِقُ الْمَصْدُوقُ-: "إنَّ أَحَدَكُمْ يُجْمَعُ خَلْقُهُ فِي بَطْنِ أُمِّهِ أَرْبَعِينَ يَوْمًا نُطْفَةً، ثُمَّ يَكُونُ عَلَقَةً مِثْلَ ذَلِكَ، ثُمَّ يَكُونُ مُضْغَةً مِثْلَ ذَلِكَ، ثُمَّ يُرْسَلُ إلَيْهِ الْمَلَكُ فَيَنْفُخُ فِيهِ الرُّوحَ، وَيُؤْمَرُ بِأَرْبَعِ كَلِمَاتٍ: بِكَتْبِ رِزْقِهِ، وَأَجَلِهِ، وَعَمَلِهِ، وَشَقِيٍّ أَمْ سَعِيدٍ؛ فَوَاَللَّهِ الَّذِي لَا إلَهَ غَيْرُهُ إنَّ أَحَدَكُمْ لَيَعْمَلُ بِعَمَلِ أَهْلِ الْجَنَّةِ حَتَّى مَا يَكُونُ بَيْنَهُ وَبَيْنَهَا إلَّا ذِرَاعٌ فَيَسْبِقُ عَلَيْهِ الْكِتَابُ فَيَعْمَلُ بِعَمَلِ أَهْلِ النَّارِ فَيَدْخُلُهَا. وَإِنَّ أَحَدَكُمْ لَيَعْمَلُ بِعَمَلِ أَهْلِ النَّارِ حَتَّى مَا يَكُونُ بَيْنَهُ وَبَيْنَهَا إلَّا ذِرَاعٌ فَيَسْبِقُ عَلَيْهِ الْكِتَابُ فَيَعْمَلُ بِعَمَلِ أَهْلِ الْجَنَّةِ فَيَدْخُلُهَا". رَوَاهُ الْبُخَارِيُّ. ، وَمُسْلِمٌ. .',
+ x:'بيَّن مراحل خلق الإنسان في بطن أمه: أربعون يوماً نُطفة، ثم علقة مثلها، ثم مضغة مثلها؛ ثم يُرسَل إليه المَلَك فينفخ فيه الروح، ويُؤمَر بكتابة رزقه وأجله وعمله وشقّائه أو سعادته. وفي الحديث دلالة على أن الإنسان قد يعمل بعمل أهل الجنة أو بعمل أهل النار حتى قربَ الأجل؛ فإذا سبق عليه الكتاب فقد قُضي أمره.'
+},
+{n:5,
+ o:'من أَحْدَث في أمرِنا هذا ما ليس منه فهو رَدّ',
+ r:'عائشة أم المؤمنين رضي الله عنها',
+ s:'رواه البخاري (2697) ومسلم (1718)',
+ t:'عَنْ أُمِّ الْمُؤْمِنِينَ أُمِّ عَبْدِ اللَّهِ عَائِشَةَ رَضِيَ اللَّهُ عَنْهَا، قَالَتْ: قَالَ: رَسُولُ اللَّهِ صلى الله عليه و سلم "مَنْ أَحْدَثَ فِي أَمْرِنَا هَذَا مَا لَيْسَ مِنْهُ فَهُوَ رَدٌّ رَوَاهُ الْبُخَارِيُّ. ،وَمُسْلِمٌ. وَفِي رِوَايَةٍ [لِمُسْلِمٍ: مَنْ عَمِلَ عَمَلًا لَيْسَ عَلَيْهِ أَمْرُنَا فَهُوَ رَدٌّ".',
+ x:'كل أمر أُحدث في الدين ولم يكن عليه أصل فهو مرفوض؛ وهذا أصل البدع: أن العبادة تؤتى على طريقة النبي ﷺ لا باجتهاد المحدث؛ وورد في حديث آخر: «كل بدعة ضلالة».'
+},
+{n:6,
+ o:'الحلال بيِّن والحرام بيِّن',
+ r:'النعمان بن بشير رضي الله عنهما',
+ s:'رواه البخاري (52) ومسلم (1599)',
+ t:'عَنْ أَبِي عَبْدِ اللَّهِ النُّعْمَانِ بْنِ بَشِيرٍ رَضِيَ اللَّهُ عَنْهُمَا، قَالَ: سَمِعْت رَسُولَ اللَّهِ صلى الله عليه و سلم يَقُولُ: "إنَّ الْحَلَالَ بَيِّنٌ، وَإِنَّ الْحَرَامَ بَيِّنٌ، وَبَيْنَهُمَا أُمُورٌ مُشْتَبِهَاتٌ لَا يَعْلَمُهُنَّ كَثِيرٌ مِنْ النَّاسِ، فَمَنْ اتَّقَى الشُّبُهَاتِ فَقْد اسْتَبْرَأَ لِدِينِهِ وَعِرْضِهِ، وَمَنْ وَقَعَ فِي الشُّبُهَاتِ وَقَعَ فِي الْحَرَامِ، كَالرَّاعِي يَرْعَى حَوْلَ الْحِمَى يُوشِكُ أَنْ يَرْتَعَ فِيهِ، أَلَا وَإِنَّ لِكُلِّ مَلِكٍ حِمًى، أَلَا وَإِنَّ حِمَى اللَّهِ مَحَارِمُهُ، أَلَا وَإِنَّ فِي الْجَسَدِ مُضْغَةً إذَا صَلَحَتْ صَلَحَ الْجَسَدُ كُلُّهُ، وَإذَا فَسَدَتْ فَسَدَ الْجَسَدُ كُلُّهُ، أَلَا وَهِيَ الْقَلْبُ".',
+ x:'الحلال والحرام مسائل بيِّنات يعلمها الناس، وبينهما أمور مشتبهات لا يعلمها كثير من الناس؛ فمن اتقى الشبهات استبرأ لدينه وعرضه، ومن وقع فيها كاد يقع في الحرام كالراعي يرعى حول الحمى. والقلب أصل العمل: فإذا صلح صلح كلُّ شيء، وإذا فسد فسد كلُّ شيء.'
+},
+{n:7,
+ o:'الدِّينُ النَّصيحة',
+ r:'تميم بن أوس الداري رضي الله عنه',
+ s:'رواه مسلم (55)',
+ t:'عَنْ أَبِي رُقَيَّةَ تَمِيمِ بْنِ أَوْسٍ الدَّارِيِّ رَضِيَ اللهُ عَنْهُ أَنَّ النَّبِيَّ صلى الله عليه وسلم قَالَ: "الدِّينُ النَّصِيحَةُ." قُلْنَا: لِمَنْ؟ قَالَ: "لِلَّهِ، وَلِكِتَابِهِ، وَلِرَسُولِهِ، وَلِأَئِمَّةِ الْمُسْلِمِينَ وَعَامَّتِهِمْ." رَوَاهُ مُسْلِمٌ.',
+ x:'النصيحة هنا الإخلاص والمشورة: فنصيحة الله إخلاص الدين له، ونصيحة كتابه تصديقه وتعظيمه والعمل به، ونصيحة رسوله تصديقه والمتابعة له، ونصيحة الأئمة طاعتهم في الحق والنصح لهم، ونصيحة عامة المسلمين البرُّ عليهم والنصح لهم.'
+},
+{n:8,
+ o:'أُمِرت أن أُقاتِل الناس',
+ r:'عبد الله بن عمر رضي الله عنهما',
+ s:'رواه البخاري (25) ومسلم (22)',
+ t:'عَنْ ابْنِ عُمَرَ رَضِيَ اللَّهُ عَنْهُمَا، أَنَّ رَسُولَ اللَّهِ صلى الله عليه و سلم قَالَ: "أُمِرْتُ أَنْ أُقَاتِلَ النَّاسَ حَتَّى يَشْهَدُوا أَنْ لَا إلَهَ إلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ، وَيُقِيمُوا الصَّلَاةَ، وَيُؤْتُوا الزَّكَاةَ؛ فَإِذَا فَعَلُوا ذَلِكَ عَصَمُوا مِنِّي دِمَاءَهُمْ وَأَمْوَالَهُمْ إلَّا بِحَقِّ الْإِسْلَامِ، وَحِسَابُهُمْ عَلَى اللَّهِ تَعَالَى" .',
+ x:'أُمر ﷺ بجهاد من عاند الدعوة حتى يشهدوا أن لا إله إلا الله ويقيموا الصلاة ويؤتوا الزكاة؛ فمن أدَّى ذلك عُصِم دماؤه وأمواله إلا بحق الإسلام كالحدود والديّة، وحسابه على الله تعالى.'
+},
+];
+
+</script>
+
+<script>
+// الأربعون النووية — ٩ إلى ١٦
+const NAWAWI_P2 = [
+{n:9,
+ o:'ما نَهَيْتكم عنه فَاجْتنِبوه',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه البخاري (7288) ومسلم (1337)',
+ t:'عَنْ أَبِي هُرَيْرَةَ عَبْدِ الرَّحْمَنِ بْنِ صَخْرٍ رَضِيَ اللهُ عَنْهُ قَالَ: سَمِعْت رَسُولَ اللَّهِ صلى الله عليه و سلم يَقُولُ: "مَا نَهَيْتُكُمْ عَنْهُ فَاجْتَنِبُوهُ، وَمَا أَمَرْتُكُمْ بِهِ فَأْتُوا مِنْهُ مَا اسْتَطَعْتُمْ، فَإِنَّمَا أَهْلَكَ الَّذِينَ مِنْ قَبْلِكُمْ كَثْرَةُ مَسَائِلِهِمْ وَاخْتِلَافُهُمْ عَلَى أَنْبِيَائِهِمْ ".',
+ x:'تجنَّبوا ما نُهِيتُم عنه جميعاً، واتبعوا ما أُمِرتُم به بقدر الاستطاعة؛ فكثرةُ المسائل التي لا نفع لها، واختلافُ الأمم على أنبيائهم، كانت من أسباب هلاكهم.'
+},
+{n:10,
+ o:'إنَّ اللهَ طَيِّبٌ لا يقبَلُ إلا طَيِّبًا',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه مسلم (1015)',
+ t:'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم "إنَّ اللَّهَ طَيِّبٌ لَا يَقْبَلُ إلَّا طَيِّبًا، وَإِنَّ اللَّهَ أَمَرَ الْمُؤْمِنِينَ بِمَا أَمَرَ بِهِ الْمُرْسَلِينَ فَقَالَ تَعَالَى: "يَا أَيُّهَا الرُّسُلُ كُلُوا مِنْ الطَّيِّبَاتِ وَاعْمَلُوا صَالِحًا"، وَقَالَ تَعَالَى: "يَا أَيُّهَا الَّذِينَ آمَنُوا كُلُوا مِنْ طَيِّبَاتِ مَا رَزَقْنَاكُمْ" ثُمَّ ذَكَرَ الرَّجُلَ يُطِيلُ السَّفَرَ أَشْعَثَ أَغْبَرَ يَمُدُّ يَدَيْهِ إلَى السَّمَاءِ: يَا رَبِّ! يَا رَبِّ! وَمَطْعَمُهُ حَرَامٌ، وَمَشْرَبُهُ حَرَامٌ، وَمَلْبَسُهُ حَرَامٌ، وَغُذِّيَ بِالْحَرَامِ، فَأَنَّى يُسْتَجَابُ لَهُ؟". رَوَاهُ مُسْلِمٌ.',
+ x:'لا يقبل الله من عبده إلا الطيّب: في مأكله ومشربه ولباسه ونفَقته؛ فالمؤمن يبقى في طيّبات الله، ومن غذَّي أو لبَس من الحرام فقد أَبطَلَ دعاءه.'
+},
+{n:11,
+ o:'دَعْ ما يُرِيبُك',
+ r:'الحسن بن علي بن أبي طالب رضي الله عنهما',
+ s:'رواه الترمذي (2520) والنسائي، وقال: حديث حسن صحيح',
+ t:'عَنْ أَبِي مُحَمَّدٍ الْحَسَنِ بْنِ عَلِيِّ بْنِ أَبِي طَالِبٍ سِبْطِ رَسُولِ اللَّهِ صلى الله عليه و سلم وَرَيْحَانَتِهِ رَضِيَ اللَّهُ عَنْهُمَا، قَالَ: حَفِظْت مِنْ رَسُولِ اللَّهِ صلى الله عليه و سلم "دَعْ مَا يُرِيبُك إلَى مَا لَا يُرِيبُك". رَوَاهُ التِّرْمِذِيُّ [رقم:2520]، وَالنَّسَائِيّ. وَقَالَ التِّرْمِذِيُّ: حَدِيثٌ حَسَنٌ صَحِيحٌ.',
+ x:'ترَكِ الشُّبُهات التي تُرِيبك؛ فالقلب يطمئن في ما لا يُرِيبُه، فمن تركها حفظ دينه وعرْضَه.'
+},
+{n:12,
+ o:'مِن حُسنِ إسلامِ المرء تَركُهُ ما لا يَعْنِيه',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه الترمذي (2318) وابن ماجه (3976)، حديث حسن',
+ t:'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم "مِنْ حُسْنِ إسْلَامِ الْمَرْءِ تَرْكُهُ مَا لَا يَعْنِيهِ". حَدِيثٌ حَسَنٌ، رَوَاهُ التِّرْمِذِيُّ [رقم: 2318] ، ابن ماجه [رقم:3976].',
+ x:'تركُ ما لا يعنيه — من كلامٍ أو فعلٍ لا حاجةَ فيه — من علامات جَمال إسلامه.'
+},
+{n:13,
+ o:'لا يُؤْمِنُ أحدُكم حتى يُحِبَّ لأخيه',
+ r:'أنس بن مالك خادم رسول الله ﷺ رضي الله عنه',
+ s:'رواه البخاري (13) ومسلم (45)',
+ t:'عَنْ أَبِي حَمْزَةَ أَنَسِ بْنِ مَالِكٍ رَضِيَ اللهُ عَنْهُ خَادِمِ رَسُولِ اللَّهِ صلى الله عليه و سلم عَنْ النَّبِيِّ صلى الله عليه و سلم قَالَ: "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ". رَوَاهُ الْبُخَارِيُّ [رقم:13]، وَمُسْلِمٌ [رقم:45].',
+ x:'لا يُكمِلُ إيمانُه حتى يُحِبَّ لأخيه مثلما يُحِبُّ لنفسه؛ فالمَحَبَّة الصادقةُ في هذا.'
+},
+{n:14,
+ o:'لا يَحِلُّ دَمُ امْرِئٍ مُسلمٍ',
+ r:'عبد الله بن مسعود رضي الله عنه',
+ s:'رواه البخاري (6878) ومسلم (1676)',
+ t:'عَنْ ابْنِ مَسْعُودٍ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم "لَا يَحِلُّ دَمُ امْرِئٍ مُسْلِمٍ [ يشهد أن لا إله إلا الله، وأني رسول الله] إلَّا بِإِحْدَى ثَلَاثٍ: الثَّيِّبُ الزَّانِي، وَالنَّفْسُ بِالنَّفْسِ، وَالتَّارِكُ لِدِينِهِ الْمُفَارِقُ لِلْجَمَاعَةِ".',
+ x:'فيه أن دمَ المسلم محرَّم في الأصل، ولا يحلَّ إلا بإحدى ثلاث: الثُّيِّبُ الزَّاني، والنَّفسُ بالنَّفس، والتَّاركُ لدينه المُفارقُ للجماعة.'
+},
+{n:15,
+ o:'مَن كانَ يُؤمِنُ بالله واليومِ الآخِرِ',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه البخاري (6018) ومسلم (47)',
+ t:'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ أَنَّ رَسُولَ اللَّهِ صلى الله عليه و سلم قَالَ: "مَنْ كَانَ يُؤْمِنُ بِاَللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ، وَمَنْ كَانَ يُؤْمِنُ بِاَللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيُكْرِمْ جَارَهُ، وَمَنْ كَانَ يُؤْمِنُ بِاَللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيُكْرِمْ ضَيْفَهُ".',
+ x:'الإيمانُ يُتَجَلَّى في ثلاث من هذا الحديث: أن يقلَّ خيراً أو يصمت، وأن يُكرِمَ جارَه، وأن يُكرِمَ ضيفَه.'
+},
+{n:16,
+ o:'لا تَغْضَبْ',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه البخاري (6116)',
+ t:'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ أَنَّ رَجُلًا قَالَ لِلنَّبِيِّ صلى الله عليه و سلم أَوْصِنِي. قَالَ: لَا تَغْضَبْ، فَرَدَّدَ مِرَارًا، قَالَ: لَا تَغْضَبْ" .',
+ x:'لا تغضب؛ فالغضبُ يورث المحن؛ وقد أعاد ذلك عليه مراراً.'
+},
+];
+
+</script>
+
+<script>
+// الأربعون النووية — ١٧ إلى ٢٥
+const NAWAWI_P3 = [
+{n:17,
+ o:'إنَّ اللهَ كَتَبَ الإحسانَ',
+ r:'شدّاد بن أوس رضي الله عنه',
+ s:'رواه مسلم (1955)',
+ t:'عَنْ أَبِي يَعْلَى شَدَّادِ بْنِ أَوْسٍ رَضِيَ اللهُ عَنْهُ عَنْ رَسُولِ اللَّهِ صلى الله عليه و سلم قَالَ: "إنَّ اللَّهَ كَتَبَ الْإِحْسَانَ عَلَى كُلِّ شَيْءٍ، فَإِذَا قَتَلْتُمْ فَأَحْسِنُوا الْقِتْلَةَ، وَإِذَا ذَبَحْتُمْ فَأَحْسِنُوا الذِّبْحَةَ، وَلْيُحِدَّ أَحَدُكُمْ شَفْرَتَهُ، وَلْيُرِحْ ذَبِيحَتَهُ". رَوَاهُ مُسْلِمٌ.',
+ x:'الإحسان في كل شيء؛ فإذا قتلتم فأحسنوا القتلة، وإذا ذبحتُم فأحسنوا الذبحة: بالحدِّ للشَّفرة، والترحُّم للمذبُوح.'
+},
+{n:18,
+ o:'اتَّقِ اللهَ حَيْثُما كُنْتَ',
+ r:'أبو ذر جُندب بن جُنادَة، ومعاذ بن جبل رضي الله عنهما',
+ s:'رواه الترمذي (1987)، حديث حسن وفي بعض النسخ حسن صحيح',
+ t:'عَنْ أَبِي ذَرٍّ جُنْدَبِ بْنِ جُنَادَةَ، وَأَبِي عَبْدِ الرَّحْمَنِ مُعَاذِ بْنِ جَبَلٍ رَضِيَ اللَّهُ عَنْهُمَا، عَنْ رَسُولِ اللَّهِ صلى الله عليه و سلم قَالَ: "اتَّقِ اللَّهَ حَيْثُمَا كُنْت، وَأَتْبِعْ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا، وَخَالِقْ النَّاسَ بِخُلُقٍ حَسَنٍ" . رَوَاهُ التِّرْمِذِيُّ [رقم:1987] وَقَالَ: حَدِيثٌ حَسَنٌ، وَفِي بَعْضِ النُّسَخِ: حَسَنٌ صَحِيحٌ.',
+ x:'فيه ثلاث وصايا: تقوى الله حيثما كنت، وأن تُتبِعَ السيّئةَ حسنةً فيُمحَيْها، وحسنُ الخُلُق مع الناس.'
+},
+{n:19,
+ o:'يَا غُلامِ! إنِّي أُعلِّمُك كَلِمات',
+ r:'عبد الله بن عبّاس رضي الله عنهما',
+ s:'رواه الترمذي (2516)، حديث حسن صحيح',
+ t:'عَنْ عَبْدِ اللَّهِ بْنِ عَبَّاسٍ رَضِيَ اللَّهُ عَنْهُمَا قَالَ: "كُنْت خَلْفَ رَسُولِ اللَّهِ صلى الله عليه و سلم يَوْمًا، فَقَالَ: يَا غُلَامِ! إنِّي أُعَلِّمُك كَلِمَاتٍ: احْفَظْ اللَّهَ يَحْفَظْك، احْفَظْ اللَّهَ تَجِدْهُ تُجَاهَك، إذَا سَأَلْت فَاسْأَلْ اللَّهَ، وَإِذَا اسْتَعَنْت فَاسْتَعِنْ بِاَللَّهِ، وَاعْلَمْ أَنَّ الْأُمَّةَ لَوْ اجْتَمَعَتْ عَلَى أَنْ يَنْفَعُوك بِشَيْءٍ لَمْ يَنْفَعُوك إلَّا بِشَيْءٍ قَدْ كَتَبَهُ اللَّهُ لَك، وَإِنْ اجْتَمَعُوا عَلَى أَنْ يَضُرُّوك بِشَيْءٍ لَمْ يَضُرُّوك إلَّا بِشَيْءٍ قَدْ كَتَبَهُ اللَّهُ عَلَيْك؛ رُفِعَتْ الْأَقْلَامُ، وَجَفَّتْ الصُّحُفُ" . رَوَاهُ التِّرْمِذِيُّ [رقم:2516] وَقَالَ: حَدِيثٌ حَسَنٌ صَحِيحٌ. وَفِي رِوَايَةِ غَيْرِ التِّرْمِذِيِّ: "احْفَظْ اللَّهَ تَجِدْهُ أمامك، تَعَرَّفْ إلَى اللَّهِ فِي الرَّخَاءِ يَعْرِفُك فِي الشِّدَّةِ، وَاعْلَمْ أَنَّ مَا أَخْطَأَك لَمْ يَكُنْ لِيُصِيبَك، وَمَا أَصَابَك لَمْ يَكُنْ لِيُخْطِئَك، وَاعْلَمْ أَنَّ النَّصْرَ مَعَ الصَّبْرِ، وَأَنْ الْفَرَجَ مَعَ الْكَرْبِ، وَأَنَّ مَعَ الْعُسْرِ يُسْرًا".',
+ x:'فيه الاحتماء في الأمر كلِّه: احفَظ اللهَ يَحفَظك، وإذا سألتَ فاسألَ اللهَ وحده، وإذا استعنتَ فاستعِنْ بالله وحده.'
+},
+{n:20,
+ o:'إذَا لم تَسْتَحِ فَاصْنَعْ ما شئت',
+ r:'أبو مسعُود عقبة بن عمرو الأنصاريّ البدريّ رضي الله عنه',
+ s:'رواه البخاري (219)',
+ t:'عَنْ أَبِي مَسْعُودٍ عُقْبَةَ بْنِ عَمْرٍو الْأَنْصَارِيِّ الْبَدْرِيِّ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم "إنَّ مِمَّا أَدْرَكَ النَّاسُ مِنْ كَلَامِ النُّبُوَّةِ الْأُولَى: إذَا لَمْ تَسْتَحِ فَاصْنَعْ مَا شِئْت" .',
+ x:'الحياءُ يمنعُ العبدَ عن المعاصي؛ فإذا فقدَه فصار غيرَ مُبالٍ، فاصنع ما شئت.'
+},
+{n:21,
+ o:'آمَنْتُ باللهِ ثُمَّ اسْتَقِمْ',
+ r:'سفيان بن عبد الله الثقفي رضي الله عنه',
+ s:'رواه مسلم (39)',
+ t:'عَنْ أَبِي عَمْرٍو وَقِيلَ: أَبِي عَمْرَةَ سُفْيَانَ بْنِ عَبْدِ اللَّهِ رَضِيَ اللهُ عَنْهُ قَالَ: "قُلْت: يَا رَسُولَ اللَّهِ! قُلْ لِي فِي الْإِسْلَامِ قَوْلًا لَا أَسْأَلُ عَنْهُ أَحَدًا غَيْرَك؛ قَالَ: قُلْ: آمَنْت بِاَللَّهِ ثُمَّ اسْتَقِمْ" . رَوَاهُ مُسْلِمٌ.',
+ x:'المطلوبُ من هذا الحديث: الإيمانُ بالله، ثمَّ الاستقامةُ عليه إلى الموت.'
+},
+{n:22,
+ o:'أَداء الفرائض مع حَلال الله وحَرامِه',
+ r:'جابر بن عبد الله الأنصاريّ رضي الله عنهما',
+ s:'رواه مسلم (13)',
+ t:'عَنْ أَبِي عَبْدِ اللَّهِ جَابِرِ بْنِ عَبْدِ اللَّهِ الْأَنْصَارِيِّ رَضِيَ اللَّهُ عَنْهُمَا: "أَنَّ رَجُلًا سَأَلَ رَسُولَ اللَّهِ صلى الله عليه و سلم فَقَالَ: أَرَأَيْت إذَا صَلَّيْت الْمَكْتُوبَاتِ، وَصُمْت رَمَضَانَ، وَأَحْلَلْت الْحَلَالَ، وَحَرَّمْت الْحَرَامَ، وَلَمْ أَزِدْ عَلَى ذَلِكَ شَيْئًا؛ أَأَدْخُلُ الْجَنَّةَ؟ قَالَ: نَعَمْ". رَوَاهُ مُسْلِمٌ.',
+ x:'سألَ رجلٌ ﷺ فجَاوَبَهُ: نعم؛ فمن أدَّى الفرائضَ وأخَذَ بحلال الله وتركَ حَرامَه لم يزدَد على ذلك فقد تمَّ إسلامُه.'
+},
+{n:23,
+ o:'الطَّهُورُ شَطْرُ الإيمان',
+ r:'الحارث بن عاصم الأشعريّ رضي الله عنه',
+ s:'رواه مسلم (35)',
+ t:'عَنْ أَبِي مَالِكٍ الْحَارِثِ بْنِ عَاصِمٍ الْأَشْعَرِيِّ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم "الطَّهُورُ شَطْرُ الْإِيمَانِ، وَالْحَمْدُ لِلَّهِ تَمْلَأُ الْمِيزَانَ، وَسُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ تَمْلَآنِ -أَوْ: تَمْلَأُ- مَا بَيْنَ السَّمَاءِ وَالْأَرْضِ، وَالصَّلَاةُ نُورٌ، وَالصَّدَقَةُ بُرْهَانٌ، وَالصَّبْرُ ضِيَاءٌ، وَالْقُرْآنُ حُجَّةٌ لَك أَوْ عَلَيْك، كُلُّ النَّاسِ يَغْدُو، فَبَائِعٌ نَفْسَهُ فَمُعْتِقُهَا أَوْ مُوبِقُهَا". رَوَاهُ مُسْلِمٌ.',
+ x:'فيه: أن الطَّهورَ شَطْرُ الإيمان، وسبحان الله والحمدُ يملآن ما بين السماء والأرض؛ والصلاةُ نور، والصدقةُ برهان، والصبرُ ضياء، والقرآنُ حجّة لك أو عليك.'
+},
+{n:24,
+ o:'يا عِبادِي: إنِّي حَرَّمتُ الظُّلْمَ',
+ r:'أبو ذر الغِفاريّ عن ربه',
+ s:'رواه مسلم (2577)',
+ t:'عَنْ أَبِي ذَرٍّ الْغِفَارِيِّ رَضِيَ اللهُ عَنْهُ عَنْ النَّبِيِّ صلى الله عليه و سلم فِيمَا يَرْوِيهِ عَنْ رَبِّهِ تَبَارَكَ وَتَعَالَى، أَنَّهُ قَالَ: "يَا عِبَادِي: إنِّي حَرَّمْت الظُّلْمَ عَلَى نَفْسِي، وَجَعَلْته بَيْنَكُمْ مُحَرَّمًا؛ فَلَا تَظَالَمُوا. يَا عِبَادِي! كُلُّكُمْ ضَالٌّ إلَّا مَنْ هَدَيْته، فَاسْتَهْدُونِي أَهْدِكُمْ. يَا عِبَادِي! كُلُّكُمْ جَائِعٌ إلَّا مَنْ أَطْعَمْته، فَاسْتَطْعِمُونِي أُطْعِمْكُمْ. يَا عِبَادِي! كُلُّكُمْ عَارٍ إلَّا مَنْ كَسَوْته، فَاسْتَكْسُونِي أَكْسُكُمْ. يَا عِبَادِي! إنَّكُمْ تُخْطِئُونَ بِاللَّيْلِ وَالنَّهَارِ، وَأَنَا أَغْفِرُ الذُّنُوبَ جَمِيعًا؛ فَاسْتَغْفِرُونِي أَغْفِرْ لَكُمْ. يَا عِبَادِي! إنَّكُمْ لَنْ تَبْلُغُوا ضُرِّي فَتَضُرُّونِي، وَلَنْ تَبْلُغُوا نَفْعِي فَتَنْفَعُونِي. يَا عِبَادِي! لَوْ أَنَّ أَوَّلَكُمْ وَآخِرَكُمْ وَإِنْسَكُمْ وَجِنَّكُمْ كَانُوا عَلَى أَتْقَى قَلْبِ رَجُلٍ وَاحِدٍ مِنْكُمْ، مَا زَادَ ذَلِكَ فِي مُلْكِي شَيْئًا. يَا عِبَادِي! لَوْ أَنَّ أَوَّلَكُمْ وَآخِرَكُمْ وَإِنْسَكُمْ وَجِنَّكُمْ كَانُوا عَلَى أَفْجَرِ قَلْبِ رَجُلٍ وَاحِدٍ مِنْكُمْ، مَا نَقَصَ ذَلِكَ مِنْ مُلْكِي شَيْئًا. يَا عِبَادِي! لَوْ أَنَّ أَوَّلَكُمْ وَآخِرَكُمْ وَإِنْسَكُمْ وَجِنَّكُمْ قَامُوا فِي صَعِيدٍ وَاحِدٍ، فَسَأَلُونِي، فَأَعْطَيْت كُلَّ وَاحِدٍ مَسْأَلَته، مَا نَقَصَ ذَلِكَ مِمَّا عِنْدِي إلَّا كَمَا يَنْقُصُ الْمِخْيَطُ إذَا أُدْخِلَ الْبَحْرَ. يَا عِبَادِي! إنَّمَا هِيَ أَعْمَالُكُمْ أُحْصِيهَا لَكُمْ، ثُمَّ أُوَفِّيكُمْ إيَّاهَا؛ فَمَنْ وَجَدَ خَيْرًا فَلْيَحْمَدْ اللَّهَ، وَمَنْ وَجَدَ غَيْرَ ذَلِكَ فَلَا يَلُومَن إلَّا نَفْسَهُ". رَوَاهُ مُسْلِمٌ.',
+ x:'فيه تحريمُ الظُّلْم، وطلبُ الهداية والرزق من الله وحده.'
+},
+{n:25,
+ o:'كُلُّ تَسْبِيحَةٍ صَدَقَة',
+ r:'أبو ذر الغِفاريّ رضي الله عنه',
+ s:'رواه مسلم (1006)',
+ t:'عَنْ أَبِي ذَرٍّ رَضِيَ اللهُ عَنْهُ أَيْضًا، "أَنَّ نَاسًا مِنْ أَصْحَابِ رَسُولِ اللَّهِ صلى الله عليه و سلم قَالُوا لِلنَّبِيِّ صلى الله عليه و سلم يَا رَسُولَ اللَّهِ ذَهَبَ أَهْلُ الدُّثُورِ بِالْأُجُورِ؛ يُصَلُّونَ كَمَا نُصَلِّي، وَيَصُومُونَ كَمَا نَصُومُ، وَيَتَصَدَّقُونَ بِفُضُولِ أَمْوَالِهِمْ. قَالَ: أَوَلَيْسَ قَدْ جَعَلَ اللَّهُ لَكُمْ مَا تَصَّدَّقُونَ؟ إنَّ بِكُلِّ تَسْبِيحَةٍ صَدَقَةً، وَكُلِّ تَكْبِيرَةٍ صَدَقَةً، وَكُلِّ تَحْمِيدَةٍ صَدَقَةً، وَكُلِّ تَهْلِيلَةٍ صَدَقَةً، وَأَمْرٌ بِمَعْرُوفٍ صَدَقَةٌ، وَنَهْيٌ عَنْ مُنْكَرٍ صَدَقَةٌ، وَفِي بُضْعِ أَحَدِكُمْ صَدَقَةٌ. قَالُوا: يَا رَسُولَ اللَّهِ أَيَأْتِي أَحَدُنَا شَهْوَتَهُ وَيَكُونُ لَهُ فِيهَا أَجْرٌ؟ قَالَ: أَرَأَيْتُمْ لَوْ وَضَعَهَا فِي حَرَامٍ أَكَانَ عَلَيْهِ وِزْرٌ؟ فَكَذَلِكَ إذَا وَضَعَهَا فِي الْحَلَالِ، كَانَ لَهُ أَجْرٌ". رَوَاهُ مُسْلِمٌ.',
+ x:'فيه أن ذَكْرَ الله صَدَقة، وفي كلِّ عملٍ للمسلم شيء من الخَيْر.'
+},
+];
+
+</script>
+
+<script>
+// الأربعون النووية — ٢٦ إلى ٣٤
+const NAWAWI_P4 = [
+{n:26,
+ o:'كُلُّ سُلَامَى مِنَ النَّاسِ عَلَيْهِ صَدَقَة',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه البخاري (2989) ومسلم (1009)',
+ t:'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم "كُلُّ سُلَامَى مِنْ النَّاسِ عَلَيْهِ صَدَقَةٌ، كُلَّ يَوْمٍ تَطْلُعُ فِيهِ الشَّمْسُ تَعْدِلُ بَيْنَ اثْنَيْنِ صَدَقَةٌ، وَتُعِينُ الرَّجُلَ فِي دَابَّتِهِ فَتَحْمِلُهُ عَلَيْهَا أَوْ تَرْفَعُ لَهُ عَلَيْهَا مَتَاعَهُ صَدَقَةٌ، وَالْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ، وَبِكُلِّ خُطْوَةٍ تَمْشِيهَا إلَى الصَّلَاةِ صَدَقَةٌ، وَتُمِيطُ الْأَذَى عَنْ الطَّرِيقِ صَدَقَةٌ".',
+ x:'فيه ترغيب في مضاعِفة حسنات المسلم: كلُّ سَلامَى (عضو) مرهونٌ عنه بصدقة؛ فمن الصَّدَقات تِلك: العدلُ بين اثنيْن، وَإِعانَةُ الرَّجُلِ على دَابَّتِهِ، وَكَلِمَةُ الطِّيبَة، وحُلُّ خُطوةٍ إلى الصلاة، وإزالةُ موعَثاتٍ منَ الطريق.'
+},
+{n:27,
+ o:'البِرُّ حُسْنُ الخُلُقِ',
+ r:'النوّاس بن سِمْعان، ووابِصَة بن معبد رضي الله عنهما',
+ s:'رواه مسلم؛ وحديثٌ حسن روي في المسندين: أحمد (4/227) والدارِمي (2/246)',
+ t:'عَنْ النَّوَّاسِ بْنِ سَمْعَانَ رَضِيَ اللهُ عَنْهُ عَنْ النَّبِيِّ صلى الله عليه و سلم قَالَ: "الْبِرُّ حُسْنُ الْخُلُقِ، وَالْإِثْمُ مَا حَاكَ فِي صَدْرِك، وَكَرِهْت أَنْ يَطَّلِعَ عَلَيْهِ النَّاسُ" رَوَاهُ مُسْلِمٌ رَوَاهُ مُسْلِمٌ. وَعَنْ وَابِصَةَ بْنِ مَعْبَدٍ رَضِيَ اللهُ عَنْهُ قَالَ: أَتَيْت رَسُولَ اللَّهِ صلى الله عليه و سلم فَقَالَ: "جِئْتَ تَسْأَلُ عَنْ الْبِرِّ؟ قُلْت: نَعَمْ. فقَالَ: استفت قلبك، الْبِرُّ مَا اطْمَأَنَّتْ إلَيْهِ النَّفْسُ، وَاطْمَأَنَّ إلَيْهِ الْقَلْبُ، وَالْإِثْمُ مَا حَاكَ فِي النَّفْسِ وَتَرَدَّدَ فِي الصَّدْرِ، وَإِنْ أَفْتَاك النَّاسُ وَأَفْتَوْك" . حَدِيثٌ حَسَنٌ، رَوَيْنَاهُ في مُسْنَدَي الْإِمَامَيْنِ أَحْمَدَ بْنِ حَنْبَلٍ [رقم:4/227]، وَالدَّارِمِيّ [2/246] بِإِسْنَادٍ حَسَنٍ.',
+ x:'فيه: البِرُّ حُسْنُ الخُلُقِ، والإثمُ ما حَاكَ في صَدْرِك؛ وفي رواية وابِصَةَ: الاستفتاءُ: البِرُّ ما اطمأنَّتْ إليه النَّفسُ واطمأنَّ إليه القلبُ، والإثمُ ما حَاكَ في النَّفسِ وتردَّدَ في الصَّدْر.'
+},
+{n:28,
+ o:'عَلَيْكُمْ بِسُنَّتي',
+ r:'العِرْباض بن سارية رضي الله عنه',
+ s:'رواه أبو داود (4607) والترمذي (2676)، وقال: حديث حسن صحيح',
+ t:'عَنْ أَبِي نَجِيحٍ الْعِرْبَاضِ بْنِ سَارِيَةَ رَضِيَ اللهُ عَنْهُ قَالَ: "وَعَظَنَا رَسُولُ اللَّهِ صلى الله عليه و سلم مَوْعِظَةً وَجِلَتْ مِنْهَا الْقُلُوبُ، وَذَرَفَتْ مِنْهَا الْعُيُونُ، فَقُلْنَا: يَا رَسُولَ اللَّهِ! كَأَنَّهَا مَوْعِظَةُ مُوَدِّعٍ فَأَوْصِنَا، قَالَ: أُوصِيكُمْ بِتَقْوَى اللَّهِ، وَالسَّمْعِ وَالطَّاعَةِ وَإِنْ تَأَمَّرَ عَلَيْكُمْ عَبْدٌ، فَإِنَّهُ مَنْ يَعِشْ مِنْكُمْ فَسَيَرَى اخْتِلَافًا كَثِيرًا، فَعَلَيْكُمْ بِسُنَّتِي وَسُنَّةِ الْخُلَفَاءِ الرَّاشِدِينَ الْمَهْدِيينَ، عَضُّوا عَلَيْهَا بِالنَّوَاجِذِ، وَإِيَّاكُمْ وَمُحْدَثَاتِ الْأُمُورِ؛ فَإِنَّ كُلَّ بِدْعَةٍ ضَلَالَةٌ". رَوَاهُ أَبُو دَاوُدَ.، وَاَلتِّرْمِذِيُّ [رقم:2676] وَقَالَ: حَدِيثٌ حَسَنٌ صَحِيحٌ.',
+ x:'فيه: أُمِرنا بِالعَضِّ على السُّنَّة (عَضُّوا عليها بالنَّواجِذ)، والاحتراز من مُحْدَثاتِ الأُمور؛ فإِنَّ كلَّ بِدْعَةٍ ضَلالة.'
+},
+{n:29,
+ o:'أَخْبِرْنِي بِعَمَلٍ يُدْخَلُني الجنَّةِ',
+ r:'معاذ بن جبل رضي الله عنه',
+ s:'رواه الترمذي (2616)، حديث حسن صحيح',
+ t:'عَنْ مُعَاذِ بْنِ جَبَلٍ رَضِيَ اللهُ عَنْهُ قَالَ: قُلْت يَا رَسُولَ اللَّهِ! أَخْبِرْنِي بِعَمَلٍ يُدْخِلُنِي الْجَنَّةَ وَيُبَاعِدْنِي مِنْ النَّارِ، قَالَ: "لَقَدْ سَأَلْت عَنْ عَظِيمٍ، وَإِنَّهُ لَيَسِيرٌ عَلَى مَنْ يَسَّرَهُ اللَّهُ عَلَيْهِ: تَعْبُدُ اللَّهَ لَا تُشْرِكْ بِهِ شَيْئًا، وَتُقِيمُ الصَّلَاةَ، وَتُؤْتِي الزَّكَاةَ، وَتَصُومُ رَمَضَانَ، وَتَحُجُّ الْبَيْتَ، ثُمَّ قَالَ: أَلَا أَدُلُّك عَلَى أَبْوَابِ الْخَيْرِ؟ الصَّوْمُ جُنَّةٌ، وَالصَّدَقَةُ تُطْفِئُ الْخَطِيئَةَ كَمَا يُطْفِئُ الْمَاءُ النَّارَ، وَصَلَاةُ الرَّجُلِ فِي جَوْفِ اللَّيْلِ، ثُمَّ تَلَا: " تَتَجَافَى جُنُوبُهُمْ عَنِ الْمَضَاجِعِ " حَتَّى بَلَغَ "يَعْمَلُونَ"،[ 32 سورة السجدة / الأيتان : 16 و 17 ] ثُمَّ قَالَ: أَلَا أُخْبِرُك بِرَأْسِ الْأَمْرِ وَعَمُودِهِ وَذُرْوَةِ سَنَامِهِ؟ قُلْت: بَلَى يَا رَسُولَ اللَّهِ. قَالَ: رَأْسُ الْأَمْرِ الْإِسْلَامُ، وَعَمُودُهُ الصَّلَاةُ، وَذُرْوَةُ سَنَامِهِ الْجِهَادُ، ثُمَّ قَالَ: أَلَا أُخْبِرُك بِمَلَاكِ ذَلِكَ كُلِّهِ؟ فقُلْت: بَلَى يَا رَسُولَ اللَّهِ ! فَأَخَذَ بِلِسَانِهِ وَقَالَ: كُفَّ عَلَيْك هَذَا. قُلْت: يَا نَبِيَّ اللَّهِ وَإِنَّا لَمُؤَاخَذُونَ بِمَا نَتَكَلَّمُ بِهِ؟ فَقَالَ: ثَكِلَتْك أُمُّك وَهَلْ يَكُبُّ النَّاسَ عَلَى وُجُوهِهِمْ -أَوْ قَالَ عَلَى مَنَاخِرِهِمْ- إلَّا حَصَائِدُ أَلْسِنَتِهِمْ؟!" . رَوَاهُ التِّرْمِذِيُّ [رقم:2616] وَقَالَ: حَدِيثٌ حَسَنٌ صَحِيحٌ.',
+ x:'فيه: رأسُ الأمرِ الإسلامُ، وعمُودُهُ الصلاةُ، وذُرْوَةُ سَنامِهِ الجِهاد؛ ومِلاكُ ذلك كلِّه: كُفُّ اللسان.'
+},
+{n:30,
+ o:'فَرَائِضَ اللهِ فَلا تُضَيِّعُوها',
+ r:'أبو ثعلبة الخُشَنيّ رضي الله عنه',
+ s:'رواه الدارقطني في «السُّننِ» (4/184)، حديث حسن',
+ t:'عَنْ أَبِي ثَعْلَبَةَ الْخُشَنِيِّ جُرْثُومِ بن نَاشِر رَضِيَ اللهُ عَنْهُ عَنْ رَسُولِ اللَّهِ صلى الله عليه و سلم قَال: "إنَّ اللَّهَ تَعَالَى فَرَضَ فَرَائِضَ فَلَا تُضَيِّعُوهَا، وَحَدَّ حُدُودًا فَلَا تَعْتَدُوهَا، وَحَرَّمَ أَشْيَاءَ فَلَا تَنْتَهِكُوهَا، وَسَكَتَ عَنْ أَشْيَاءَ رَحْمَةً لَكُمْ غَيْرَ نِسْيَانٍ فَلَا تَبْحَثُوا عَنْهَا". حَدِيثٌ حَسَنٌ، رَوَاهُ الدَّارَقُطْنِيّ  في «السنن» [4/184]، وَغَيْرُهُ.',
+ x:'فيه: (فرائضَ فرضَ اللهُ فلا تضيِّعوها)؛ (وحدودًا فلا تعتدوها)؛ (وحرَّمَ أشياءَ فلا تنتهِكوها)؛ (وسَكَتََ عن أشياءَ رحْمةً لكم فلا تبحثوا عنها).'
+},
+{n:31,
+ o:'ازْهَدْ في الدُّنْيا يُحِبَّكَ اللهُ',
+ r:'سَهْل بن سعد الساعديّ رضي الله عنه',
+ s:'رواه ابن ماجه (4102)، حديث حسن',
+ t:'عَنْ أَبِي الْعَبَّاسِ سَهْلِ بْنِ سَعْدٍ السَّاعِدِيّ رَضِيَ اللهُ عَنْهُ قَالَ: جَاءَ رَجُلٌ إلَى النَّبِيِّ صلى الله عليه و سلم فَقَالَ: يَا رَسُولَ اللهِ! دُلَّنِي عَلَى عَمَلٍ إذَا عَمِلْتُهُ أَحَبَّنِي اللهُ وَأَحَبَّنِي النَّاسُ؛ فَقَالَ: "ازْهَدْ فِي الدُّنْيَا يُحِبَّك اللهُ، وَازْهَدْ فِيمَا عِنْدَ النَّاسِ يُحِبَّك النَّاسُ" . حديث حسن، رَوَاهُ ابْنُ مَاجَهْ [رقم:4102]، وَغَيْرُهُ بِأَسَانِيدَ حَسَنَةٍ.',
+ x:'فيه: من زَهِد في الدُّنْيا يُجِبُّ اللهُ إليه، ومن زَهِد فيما عندَ النَّاسِ أحبَّهُ النَّاس.'
+},
+{n:32,
+ o:'لَا ضَرَرَ وَلَا ضِرَار',
+ r:'أبو سعيد الخُدريّ رضي الله عنه',
+ s:'رواه ابن ماجه (2341)، والدارقطني (4/228)، ومالك في «الموطَّإِ» (2/746)، حديث حسن',
+ t:'عَنْ أَبِي سَعِيدٍ سَعْدِ بْنِ مَالِكِ بْنِ سِنَانٍ الْخُدْرِيّ رَضِيَ اللهُ عَنْهُ أَنَّ رَسُولَ اللَّهِ صلى الله عليه و سلم قَالَ: " لَا ضَرَرَ وَلَا ضِرَارَ" . حَدِيثٌ حَسَنٌ، رَوَاهُ ابْنُ مَاجَهْ [راجع رقم:2341]، وَالدَّارَقُطْنِيّ [رقم:4/228]، وَغَيْرُهُمَا مُسْنَدًا. وَرَوَاهُ مَالِكٌ [2/746] فِي "الْمُوَطَّإِ" عَنْ عَمْرِو بْنِ يَحْيَى عَنْ أَبِيهِ عَنْ النَّبِيِّ صلى الله عليه و سلم مُرْسَلًا، فَأَسْقَطَ أَبَا سَعِيدٍ، وَلَهُ طُرُقٌ يُقَوِّي بَعْضُهَا بَعْضًا.',
+ x:'أصلَ قاعِدةٍ من قواعد الشَّريعة: لا يحلُّ للمسلم أن يُضرَّ بغيرِه، ولا أن يُضارَّ بضرِه.'
+},
+{n:33,
+ o:'البَيِّنَةُ عَلَى الْمُدَّعِي',
+ r:'عبد الله بن عبّاس رضي الله عنهما',
+ s:'رواه البيهقي في «السَّننِ» (10/252)، وبعضه في الصحيحين',
+ t:'عَنْ ابْنِ عَبَّاسٍ رَضِيَ اللَّهُ عَنْهُمَا أَنَّ رَسُولَ اللَّهِ صلى الله عليه و سلم قَالَ: "لَوْ يُعْطَى النَّاسُ بِدَعْوَاهُمْ لَادَّعَى رِجَالٌ أَمْوَالَ قَوْمٍ وَدِمَاءَهُمْ، لَكِنَّ الْبَيِّنَةَ عَلَى الْمُدَّعِي، وَالْيَمِينَ عَلَى مَنْ أَنْكَرَ" . حَدِيثٌ حَسَنٌ، رَوَاهُ الْبَيْهَقِيّ [في «السنن» 10/252]، وَغَيْرُهُ هَكَذَا، وَبَعْضُهُ فِي "الصَّحِيحَيْنِ".',
+ x:'من فقه المعاملات: (البَيِّنَةُ عَلَى الْمُدَّعِي، وَالْيَمِينُ عَلَى مَنْ أَنْكَرَ).'
+},
+{n:34,
+ o:'فَلْيُغَيِّرْهُ بِيَدِه',
+ r:'أبو سعيد الخُدريّ رضي الله عنه',
+ s:'رواه مسلم (49)',
+ t:'عَنْ أَبِي سَعِيدٍ الْخُدْرِيّ رَضِيَ اللهُ عَنْهُ قَالَ سَمِعْت رَسُولَ اللَّهِ صلى الله عليه و سلم يَقُولُ: "مَنْ رَأَى مِنْكُمْ مُنْكَرًا فَلْيُغَيِّرْهُ بِيَدِهِ، فَإِنْ لَمْ يَسْتَطِعْ فَبِلِسَانِهِ، فَإِنْ لَمْ يَسْتَطِعْ فَبِقَلْبِهِ، وَذَلِكَ أَضْعَفُ الْإِيمَانِ" . رَوَاهُ مُسْلِمٌ.',
+ x:'فيه سلَّمُ تغييرِ المُنكرِ: بِيَدِهِ، فبِلِسَانِهِ، فبِقَلْبِهِ؛ وذلك أَضْعَفُ الإيمان.'
+},
+];
+
+</script>
+
+<script>
+// الأربعون النووية — ٣٥ إلى ٤٢
+const NAWAWI_P5 = [
+{n:35,
+ o:'لَا تَحَاسَدُوا ولَا تَنَاجَشُوا',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه مسلم (2564)',
+ t:'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم " لَا تَحَاسَدُوا، وَلَا تَنَاجَشُوا، وَلَا تَبَاغَضُوا، وَلَا تَدَابَرُوا، وَلَا يَبِعْ بَعْضُكُمْ عَلَى بَيْعِ بَعْضٍ، وَكُونُوا عِبَادَ اللَّهِ إخْوَانًا، الْمُسْلِمُ أَخُو الْمُسْلِمِ، لَا يَظْلِمُهُ، وَلَا يَخْذُلُهُ، وَلَا يَكْذِبُهُ، وَلَا يَحْقِرُهُ، التَّقْوَى هَاهُنَا، وَيُشِيرُ إلَى صَدْرِهِ ثَلَاثَ مَرَّاتٍ، بِحَسْبِ امْرِئٍ مِنْ الشَّرِّ أَنْ يَحْقِرَ أَخَاهُ الْمُسْلِمَ، كُلُّ الْمُسْلِمِ عَلَى الْمُسْلِمِ حَرَامٌ: دَمُهُ وَمَالُهُ وَعِرْضُهُ" . رَوَاهُ مُسْلِمٌ.',
+ x:'نهى عن أمراض القلوب وأسباب العداوة، وأوجب أخوّة الإيمان؛ فحرمة المسلم في دمه وماله وعرضه، والتقوى في القلب.'
+},
+{n:36,
+ o:'مَن نَفَّسَ عن مُؤْمِنٍ كُرْبَةً',
+ r:'أبو هريرة رضي الله عنه',
+ s:'رواه مسلم (2699)',
+ t:'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ عَنْ النَّبِيِّ صلى الله عليه و سلم قَالَ: "مَنْ نَفَّسَ عَنْ مُؤْمِنٍ كُرْبَةً مِنْ كُرَبِ الدُّنْيَا نَفَّسَ اللَّهُ عَنْهُ كُرْبَةً مِنْ كُرَبِ يَوْمِ الْقِيَامَةِ، وَمَنْ يَسَّرَ عَلَى مُعْسِرٍ، يَسَّرَ اللَّهُ عَلَيْهِ فِي الدُّنْيَا وَالْآخِرَةِ، وَمَنْ سَتَرَ مُسْلِما سَتَرَهُ اللهُ فِي الدُّنْيَا وَالْآخِرَةِ ، وَاَللَّهُ فِي عَوْنِ الْعَبْدِ مَا كَانَ الْعَبْدُ فِي عَوْنِ أَخِيهِ، وَمَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إلَى الْجَنَّةِ، وَمَا اجْتَمَعَ قَوْمٌ فِي بَيْتٍ مِنْ بُيُوتِ اللَّهِ يَتْلُونَ كِتَابَ اللَّهِ، وَيَتَدَارَسُونَهُ فِيمَا بَيْنَهُمْ؛ إلَّا نَزَلَتْ عَلَيْهِمْ السَّكِينَةُ، وَغَشِيَتْهُمْ الرَّحْمَةُ، وَ حَفَّتهُمُ المَلاَئِكَة، وَذَكَرَهُمْ اللَّهُ فِيمَنْ عِنْدَهُ، وَمَنْ أَبَطْأَ بِهِ عَمَلُهُ لَمْ يُسْرِعْ بِهِ نَسَبُهُ". رَوَاهُ مُسْلِمٌ. بهذا اللفظ.',
+ x:'فيه فضل تفريج الكربات، والتيسير على المعسرين، وستر المسلمين، وطلب العلم؛ فالله في عون العبد ما كان العبد في عون أخيه.'
+},
+{n:37,
+ o:'مَن هَمَّ بِحَسَنَةٍ فَلَمْ يَعْمَلْهَا',
+ r:'عبد الله بن عباس رضي الله عنهما عن ربه',
+ s:'رواه البخاري (6491) ومسلم (129)',
+ t:'عَنْ ابْنِ عَبَّاسٍ رَضِيَ اللَّهُ عَنْهُمَا عَنْ رَسُولِ اللَّهِ صلى الله عليه و سلم فِيمَا يَرْوِيهِ عَنْ رَبِّهِ تَبَارَكَ وَتَعَالَى، قَالَ: "إنَّ اللَّهَ كَتَبَ الْحَسَنَاتِ وَالسَّيِّئَاتِ، ثُمَّ بَيَّنَ ذَلِكَ، فَمَنْ هَمَّ بِحَسَنَةٍ فَلَمْ يَعْمَلْهَا كَتَبَهَا اللَّهُ عِنْدَهُ حَسَنَةً كَامِلَةً، وَإِنْ هَمَّ بِهَا فَعَمِلَهَا كَتَبَهَا اللَّهُ عِنْدَهُ عَشْرَ حَسَنَاتٍ إلَى سَبْعِمِائَةِ ضِعْفٍ إلَى أَضْعَافٍ كَثِيرَةٍ، وَإِنْ هَمَّ بِسَيِّئَةٍ فَلَمْ يَعْمَلْهَا كَتَبَهَا اللَّهُ عِنْدَهُ حَسَنَةً كَامِلَةً، وَإِنْ هَمَّ بِهَا فَعَمِلَهَا كَتَبَهَا اللَّهُ سَيِّئَةً وَاحِدَةً".',
+ x:'من همَّ بحسنة فلم يعملها كُتبت له حسنة كاملة؛ ومن همَّ بسيئة ثم تركها لله كُتبت له حسنة، فإن عملها كُتبت سيئة واحدة.'
+},
+{n:38,
+ o:'مَن عَادَى لِي وَلِيًّا',
+ r:'أبو هريرة رضي الله عنه عن ربه',
+ s:'رواه البخاري (6502)',
+ t:'عَنْ أَبِي هُرَيْرَة رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُول اللَّهِ صلى الله عليه و سلم إنَّ اللَّهَ تَعَالَى قَالَ: "مَنْ عَادَى لِي وَلِيًّا فَقْد آذَنْتهُ بِالْحَرْبِ، وَمَا تَقَرَّبَ إلَيَّ عَبْدِي بِشَيْءٍ أَحَبَّ إلَيَّ مِمَّا افْتَرَضْتُهُ عَلَيْهِ، وَلَا يَزَالُ عَبْدِي يَتَقَرَّبُ إلَيَّ بِالنَّوَافِلِ حَتَّى أُحِبَّهُ، فَإِذَا أَحْبَبْتُهُ كُنْت سَمْعَهُ الَّذِي يَسْمَعُ بِهِ، وَبَصَرَهُ الَّذِي يُبْصِرُ بِهِ، وَيَدَهُ الَّتِي يَبْطِشُ بِهَا، وَرِجْلَهُ الَّتِي يَمْشِي بِهَا، وَلَئِنْ سَأَلَنِي لَأُعْطِيَنَّهُ، وَلَئِنْ اسْتَعَاذَنِي لَأُعِيذَنَّهُ". رَوَاهُ الْبُخَارِيُّ.',
+ x:'فيه وعيد شديد لمن عادى أولياء الله، وبيان منازل المتقين الذين يحبهم الله ويجيب دعاءهم.'
+},
+{n:39,
+ o:'إنَّ اللهَ تَجَاوَزَ لِي عن أُمَّتي',
+ r:'عبد الله بن عباس رضي الله عنهما',
+ s:'رواه ابن ماجه (2045) والبيهقي في «السنن» (7)، حديث حسن',
+ t:'عَنْ ابْنِ عَبَّاسٍ رَضِيَ اللَّهُ عَنْهُمَا أَنَّ رَسُولَ اللَّهِ صلى الله عليه و سلم قَالَ: "إنَّ اللَّهَ تَجَاوَزَ لِي عَنْ أُمَّتِي الْخَطَأَ وَالنِّسْيَانَ وَمَا اسْتُكْرِهُوا عَلَيْهِ" . حَدِيثٌ حَسَنٌ، رَوَاهُ ابْنُ مَاجَهْ [رقم:2045]، وَالْبَيْهَقِيّ ["السنن" 7 ].',
+ x:'فيه رحمة الله بهذه الأمة: رفع عنها المؤاخذة بالخطأ والنسيان والإكراه.'
+},
+{n:40,
+ o:'كُنْ فِي الدُّنْيَا كَأَنَّكَ غَرِيب',
+ r:'عبد الله بن عمر رضي الله عنهما',
+ s:'رواه البخاري (6416)',
+ t:'عَنْ ابْن عُمَرَ رَضِيَ اللَّهُ عَنْهُمَا قَالَ: أَخَذَ رَسُولُ اللَّهِ صلى الله عليه و سلم بِمَنْكِبِي، وَقَالَ: "كُنْ فِي الدُّنْيَا كَأَنَّك غَرِيبٌ أَوْ عَابِرُ سَبِيلٍ". وَكَانَ ابْنُ عُمَرَ رَضِيَ اللَّهُ عَنْهُمَا يَقُولُ: إذَا أَمْسَيْتَ فَلَا تَنْتَظِرْ الصَّبَاحَ، وَإِذَا أَصْبَحْتَ فَلَا تَنْتَظِرْ الْمَسَاءَ، وَخُذْ مِنْ صِحَّتِك لِمَرَضِك، وَمِنْ حَيَاتِك لِمَوْتِك. رَوَاهُ الْبُخَارِيُّ.',
+ x:'المؤمن لا يتعلق قلبه بالدنيا؛ يعمل للآخرة ولا يغترّ بزينة الحياة الدنيا.'
+},
+{n:41,
+ o:'هَوَاهُ تَبَعًا لِمَا جِئْتُ بِه',
+ r:'عبد الله بن عمرو بن العاص رضي الله عنهما',
+ s:'حديث حسن صحيح، رويناه في كتاب «الحُجَّة» بإسناد صحيح',
+ t:'عَنْ أَبِي مُحَمَّدٍ عَبْدِ اللَّهِ بْنِ عَمْرِو بْنِ الْعَاصِ رَضِيَ اللَّهُ عَنْهُمَا، قَالَ: قَالَ رَسُولُ اللَّهِ صلى الله عليه و سلم "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يَكُونَ هَوَاهُ تَبَعًا لِمَا جِئْتُ بِهِ". حَدِيثٌ حَسَنٌ صَحِيحٌ، رَوَيْنَاهُ فِي كِتَابِ "الْحُجَّةِ" بِإِسْنَادٍ صَحِيحٍ.',
+ x:'كمال الإيمان أن يكون هوى العبد تبعًا لما جاء به النبي ﷺ، فيقدّم أمر الشرع على نفسه وهواه.'
+},
+{n:42,
+ o:'يَا ابْنَ آدَمَ إِنَّكَ مَا دَعَوْتَنِي',
+ r:'أنس بن مالك رضي الله عنه عن ربه',
+ s:'رواه الترمذي (3540)، وقال: حديث حسن صحيح',
+ t:'عَنْ أَنَسِ بْنِ مَالِكٍ رَضِيَ اللهُ عَنْهُ قَالَ: سَمِعْت رَسُولَ اللَّهِ صلى الله عليه و سلم يَقُولُ: قَالَ اللَّهُ تَعَالَى: "يَا ابْنَ آدَمَ! إِنَّكَ مَا دَعَوْتنِي وَرَجَوْتنِي غَفَرْتُ لَك عَلَى مَا كَانَ مِنْك وَلَا أُبَالِي، يَا ابْنَ آدَمَ! لَوْ بَلَغَتْ ذُنُوبُك عَنَانَ السَّمَاءِ ثُمَّ اسْتَغْفَرْتنِي غَفَرْتُ لَك، يَا ابْنَ آدَمَ! إنَّك لَوْ أتَيْتنِي بِقُرَابِ الْأَرْضِ خَطَايَا ثُمَّ لَقِيتنِي لَا تُشْرِكُ بِي شَيْئًا لَأَتَيْتُك بِقُرَابِهَا مَغْفِرَةً" . رَوَاهُ التِّرْمِذِيُّ [رقم:3540]، وَقَالَ: حَدِيثٌ حَسَنٌ صَحِيحٌ.',
+ x:'فيه سعة مغفرة الله ورحمته؛ فمن دعاه واستغفره غُفر له، ولا يقنطنّ أحد من رحمته مهما عظمت ذنوبه.'
+},
+];
+
+</script>
+
+<script>
+// 05_app.js — منطق التطبيق
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s)};
+var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+var AR=function(s){return String(s).replace(/\d/g,function(d){return '٠١٢٣٤٥٦٧٨٩'[d]})};
+
+/* ---------- التخزين ---------- */
+var store={
+  get:function(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+function today(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+
+/* ---------- حجم الخط ---------- */
+var fs=parseFloat(store.get('dw_fs',1.15));
+function applyFs(){
+  fs=Math.min(1.9,Math.max(1,fs));
+  document.documentElement.style.setProperty('--fs',fs);
+  store.set('dw_fs',fs);
+}
+$('#fontPlus').addEventListener('click',function(){fs+=0.07;applyFs()});
+$('#fontMinus').addEventListener('click',function(){fs-=0.07;applyFs()});
+applyFs();
+
+/* ---------- الوضع الليلي/النهاري ---------- */
+var meta=$('#metaTheme');
+var theme=store.get('dw_theme',null);
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  $('#iconMoon').classList.toggle('hidden',t==='dark');
+  $('#iconSun').classList.toggle('hidden',t!=='dark');
+  if(meta)meta.setAttribute('content',t==='dark'?'#071B13':'#0B4E33');
+  store.set('dw_theme',t);
+}
+if(!theme)theme=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+applyTheme(theme);
+$('#themeBtn').addEventListener('click',function(){theme=(theme==='dark'?'light':'dark');applyTheme(theme)});
+
+/* ---------- التنقل بين الأقسام ---------- */
+function showView(v){
+  $('#screen-azkar').classList.toggle('hidden',v!=='azkar');
+  $('#screen-nawawi').classList.toggle('hidden',v!=='nawawi');
+  $$('.tab').forEach(function(b){b.classList.toggle('active',b.dataset.view===v)});
+}
+$$('.tab').forEach(function(b){b.addEventListener('click',function(){showView(b.dataset.view)})});
+
+/* ---------- الأذكار ---------- */
+var part='morning';
+if(store.get('dw_day',null)!==today()){
+  store.set('dw_day',today());store.set('dw_m',{});store.set('dw_e',{});
+}
+var counts={morning:store.get('dw_m',{}),evening:store.get('dw_e',{})};
+
+function listFor(){return ADHKAR[part]||[]}
+function ckey(){return part==='morning'?'dw_m':'dw_e'}
+function saveCounts(){store.set(ckey(),counts[part])}
+function remaining(d){return Math.max(0,d.count-(counts[part][d.id]||0))}
+
+function updateProg(){
+  var l=listFor();
+  var done=l.filter(function(d){return remaining(d)===0}).length;
+  $('#progText').textContent='أتممتَ '+AR(done)+' من '+AR(l.length)+
+    (part==='morning'?' — أذكار الصباح':' — أذكار المساء');
+  $('#progFill').style.width=(l.length?Math.round(done/l.length*100):0)+'%';
+}
+
+function renderAzkar(){
+  var wrap=$('#adkharList');
+  wrap.innerHTML='';
+  listFor().forEach(function(d){
+    var rem=remaining(d),done=rem===0;
+    var card=document.createElement('div');
+    card.className='z-card'+(done?' done':'');
+    card.innerHTML=
+      '<div class="z-tags">'+
+        '<span class="chip">التكرار: '+AR(d.count)+'</span>'+
+        '<span class="chip gold">'+d.src+'</span>'+
+      '</div>'+
+      '<div class="z-text">'+d.text+'</div>'+
+      (d.note?'<div class="z-note">'+d.note+'</div>':'')+
+      '<div class="cnt_row">'+
+        '<span class="count-badge">'+(done?'اكتمل':'باقي: '+AR(rem))+'</span>'+
+        '<div class="acts">'+
+          '<button class="cnt-minus" aria-label="تراجع خطوة">−</button>'+
+          '<button class="bigbtn'+(done?' done':'')+'" aria-label="عدّ الذكر">'+(done?'✓':AR(rem))+'</button>'+
+        '</div>'+
+      '</div>';
+    card.querySelector('.bigbtn').addEventListener('click',function(){
+      if(remaining(d)>0){counts[part][d.id]=(counts[part][d.id]||0)+1;saveCounts();renderAzkar()}
+    });
+    card.querySelector('.cnt-minus').addEventListener('click',function(){
+      var dn=counts[part][d.id]||0;
+      if(dn>0){counts[part][d.id]=dn-1;saveCounts();renderAzkar()}
+    });
+    wrap.appendChild(card);
+  });
+  updateProg();
+}
+
+$$('.seg-btn').forEach(function(b){
+  b.addEventListener('click',function(){
+    part=b.dataset.part;
+    $$('.seg-btn').forEach(function(x){x.classList.toggle('active',x===b)});
+    renderAzkar();
+  });
+});
+$('#resetBtn').addEventListener('click',function(){counts[part]={};saveCounts();renderAzkar()});
+
+/* ---------- الأربعون النووية ---------- */
+var NAWAWI=[].concat(NAWAWI_P1,NAWAWI_P2,NAWAWI_P3,NAWAWI_P4,NAWAWI_P5);
+
+function norm(s){
+  return String(s||'')
+    .replace(/[\u064B-\u0652\u0670\u0640]/g,'')
+    .replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
+}
+
+function renderList(q){
+  q=norm(q||'');
+  var wrap=$('#hadithList');
+  wrap.innerHTML='';
+  var shown=0;
+  NAWAWI.forEach(function(h){
+    if(q&&norm(h.o+' '+h.r+' '+h.s+' '+h.t).indexOf(q)===-1)return;
+    shown++;
+    var b=document.createElement('button');
+    b.className='h-item';
+    b.innerHTML='<span class="h-num">'+AR(h.n)+'</span>'+
+      '<span style="min-width:0"><span class="h-title">'+h.o+'</span>'+
+      '<span class="h-src">'+h.r+' — '+h.s+'</span></span>';
+    b.addEventListener('click',function(){openH(h.n)});
+    wrap.appendChild(b);
+  });
+  if(!shown)wrap.innerHTML='<div class="no-results">لا توجد نتائج مطابقة</div>';
+}
+
+var cur=0;
+function openH(n){
+  cur=n;
+  var h=NAWAWI[n-1];
+  $('#detailTitle').textContent='الحديث '+AR(n);
+  $('#detailBody').innerHTML=
+    '<span class="d-badge">الحديث '+AR(n)+' من '+AR(NAWAWI.length)+'</span>'+
+    '<div class="d-rawi">'+h.r+'</div>'+
+    '<div class="d-text">'+h.t+'</div>'+
+    '<div class="d-label">شرحٌ موجز</div>'+
+    '<div class="d-expl">'+h.x+'</div>'+
+    '<span class="chip gold d-chip">'+h.s+'</span>';
+  $('#prevH').disabled=n<=1;
+  $('#nextH').disabled=n>=NAWAWI.length;
+  $('#detail').classList.remove('hidden');
+  document.querySelector('.detail-body').scrollTop=0;
+}
+$('#closeDetail').addEventListener('click',function(){$('#detail').classList.add('hidden')});
+$('#prevH').addEventListener('click',function(){if(cur>1)openH(cur-1)});
+$('#nextH').addEventListener('click',function(){if(cur<NAWAWI.length)openH(cur+1)});
+
+var tmr;
+$('#searchInput').addEventListener('input',function(e){
+  clearTimeout(tmr);
+  var v=e.target.value;
+  tmr=setTimeout(function(){renderList(v)},120);
+});
+
+/* ---------- التشغيل ---------- */
+renderAzkar();
+renderList('');
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+})();
+
+</script>
+
+</body>
+</html>
