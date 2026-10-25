@@ -1,0 +1,17 @@
+{
+  "name": "الذِّكْر — أذكار الصباح والمساء والأربعون النووية",
+  "short_name": "الذكر",
+  "description": "تطبيق إسلامي: أذكار الصباح والمساء والأربعون النووية مع شرح موجز معتمد، خط كبير، وضع ليلي ونهاري، يعمل دون إنترنت",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B1A14",
+  "theme_color": "#0B4E33",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
