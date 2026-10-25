@@ -273,6 +273,13 @@ html[data-theme="dark"] .asma-num{color:var(--gold)}
 }
 html[data-theme="dark"] .asma-name{color:var(--ok)}
 .asma-m{font-size:calc(var(--ui)*.84);color:var(--ink2);margin-top:6px;display:block;line-height:1.8}
+.asma-badge{
+  position:absolute;top:10px;inset-inline-start:12px;
+  font-size:calc(var(--ui)*.68);color:var(--gold-ink);font-weight:800;
+}
+html[data-theme="dark"] .asma-badge{color:var(--gold)}
+.asma-card.allah{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-soft),var(--card) 70%)}
+.asma-card.allah .asma-name{font-size:calc(var(--read)*1.02)}
 
 /* ===== شريط تكبير الخط (الأسفل) ===== */
 .zoom-dock{
@@ -817,6 +824,7 @@ const NAWAWI_P5 = [
 // المصدر: موقع «أذكار المسلم» https://www.al-adkar.com/asma-allah — الأسماء والمعاني المختصرة كما وردت فيه
 // الأصل: حديث «إن لله تسعة وتسعين اسمًا...» (متفق عليه) وعدُّها المشهور عند أهل العلم
 const ASMA=[
+{n:0,name:'الله',m:'أكبر الأسماء وأجمع معانيها؛ العَلَمُ على ذات الربِّ سبحانه، المعبودِ بحقٍّ الذي لا إله إلا هو'},
 {n:1,name:'الرحمن',m:'كثير الرحمة بعباده'},
 {n:2,name:'الرحيم',m:'الرحيم بالمؤمنين'},
 {n:3,name:'الملك',m:'المالك لكل شيء'},
@@ -1106,8 +1114,10 @@ function renderAsma(){
   if(wrap.children.length)return;
   ASMA.forEach(function(a){
     var d=document.createElement('div');
-    d.className='asma-card';
-    d.innerHTML='<span class="asma-num">'+AR(a.n)+'</span>'+
+    d.className='asma-card'+(a.n===0?' allah':'');
+    d.innerHTML=(a.n===0
+        ?'<span class="asma-badge">الاسم الأعظم</span>'
+        :'<span class="asma-num">'+AR(a.n)+'</span>')+
       '<span class="asma-name">'+a.name+'</span>'+
       '<span class="asma-m">'+a.m+'</span>';
     wrap.appendChild(d);
