@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>الذِّكْر — أذكار الصباح والمساء والأربعون النووية</title>
+<title>الذِّكْر — أذكار الصباح والمساء والأربعون النووية وأسماء الله الحسنى</title>
 <meta name="description" content="تطبيق إسلامي: أذكار الصباح والمساء كاملة، والأربعون النووية مع شرح موجز من الشروح المعتمدة، بخط كبير ومظهر ليلي/نهاري، يعمل دون إنترنت، جاهز للإضافة إلى شاشة iPad الرئيسية">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#0B4E33" id="metaTheme">
@@ -245,9 +245,34 @@ html[data-theme="dark"] .d-label{color:var(--ok)}
 html[data-theme="dark"] .home-ico.moon{background:#101A2E;color:#9DBCF5}
 .home-ico.book{background:var(--primary-soft);color:var(--primary)}
 html[data-theme="dark"] .home-ico.book{color:var(--ok)}
+.home-ico.star{background:var(--gold-soft);color:var(--gold-ink)}
+html[data-theme="dark"] .home-ico.star{color:var(--gold)}
 .home-card-title{font-weight:900;font-size:calc(var(--ui)*1.2);display:block;line-height:1.6}
 .home-card-sub{color:var(--ink2);font-size:calc(var(--ui)*.8);display:block;margin-top:4px}
 .home-arrow{margin-inline-start:auto;color:var(--ink2);flex:none;width:26px;height:26px}
+
+/* ===== أسماء الله الحسنى ===== */
+.asma-head{background:var(--gold-soft);border:1px solid var(--gold);border-radius:14px;padding:14px 18px;margin-top:14px}
+.asma-hadith{font-family:'Amiri','Geeza Pro',serif;font-size:calc(var(--ui)*1.02);line-height:2.1;color:var(--ink)}
+.asma-src{font-size:calc(var(--ui)*.74);color:var(--ink2);margin-top:8px}
+.asma-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px;padding-bottom:16px}
+@media (min-width:640px){.asma-grid{grid-template-columns:1fr 1fr}}
+.asma-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:18px 14px 16px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.asma-card::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--gold),var(--primary))}
+.asma-num{
+  position:absolute;top:8px;inset-inline-start:12px;
+  font-size:calc(var(--ui)*.7);color:var(--gold-ink);font-weight:800;
+}
+html[data-theme="dark"] .asma-num{color:var(--gold)}
+.asma-name{
+  font-family:'Amiri','Geeza Pro',serif;font-size:calc(var(--read)*.82);line-height:1.6;
+  color:var(--primary);font-weight:700;display:block;
+}
+html[data-theme="dark"] .asma-name{color:var(--ok)}
+.asma-m{font-size:calc(var(--ui)*.84);color:var(--ink2);margin-top:6px;display:block;line-height:1.8}
 
 /* ===== شريط تكبير الخط (الأسفل) ===== */
 .zoom-dock{
@@ -296,7 +321,7 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
       <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <div>
         <div class="brand-name">الذِّكْر</div>
-        <div class="brand-sub">أذكار الصباح والمساء والأربعون النووية</div>
+        <div class="brand-sub">الأذكار والأربعون النووية وأسماء الله الحسنى</div>
       </div>
     </div>
     <div class="tools">
@@ -318,7 +343,7 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
       <div class="home-hero">
         <div class="home-bism">بِسْمِ اللهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
         <div class="home-title">الذِّكْر</div>
-        <div class="home-sub">أذكار الصباح والمساء والأربعون النووية</div>
+        <div class="home-sub">الأذكار والأربعون النووية وأسماء الله الحسنى</div>
       </div>
       <div class="home-cards">
         <button class="home-card" data-go="morning">
@@ -334,6 +359,11 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
         <button class="home-card" data-go="nawawi">
           <span class="home-ico book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span>
           <span style="min-width:0"><span class="home-card-title">الأربعون النووية</span><span class="home-card-sub">٤٢ حديثًا مع شرحٍ موجز</span></span>
+          <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="home-card" data-go="asma">
+          <span class="home-ico star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 5.7L19.6 9l-4.6 3.4 1.8 5.8L12 14.9 7.2 18.2l1.8-5.8L4.4 9l5.7-1.3z"/></svg></span>
+          <span style="min-width:0"><span class="home-card-title">أسماء الله الحسنى</span><span class="home-card-sub">٩٩ اسمًا مع معناها المختصر</span></span>
           <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
       </div>
@@ -369,6 +399,15 @@ noscript{display:block;text-align:center;padding:20px;color:var(--ink2)}
         <input id="searchInput" type="search" placeholder="ابحث في الأربعين النووية…" autocomplete="off">
       </div>
       <div id="hadithList"></div>
+    </section>
+
+    <!-- قسم أسماء الله الحسنى -->
+    <section id="screen-asma" class="container wrap hidden">
+      <div class="asma-head">
+        <div class="asma-hadith">﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَى فَادْعُوهُ بِهَا﴾ — «إِنَّ لِلَّهِ تِسْعَةً وَتَسْعِينَ اسْمًا، مِائَةً إِلَّا وَاحِدًا، مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ»</div>
+        <div class="asma-src">متفق عليه — الأسماء والمعاني المختصرة عن موقع «أذكار المسلم» الموثوق</div>
+      </div>
+      <div id="asmaList" class="asma-grid"></div>
     </section>
   </main>
 
@@ -774,6 +813,114 @@ const NAWAWI_P5 = [
 </script>
 
 <script>
+// أسماء الله الحسنى التسعة والتسعون
+// المصدر: موقع «أذكار المسلم» https://www.al-adkar.com/asma-allah — الأسماء والمعاني المختصرة كما وردت فيه
+// الأصل: حديث «إن لله تسعة وتسعين اسمًا...» (متفق عليه) وعدُّها المشهور عند أهل العلم
+const ASMA=[
+{n:1,name:'الرحمن',m:'كثير الرحمة بعباده'},
+{n:2,name:'الرحيم',m:'الرحيم بالمؤمنين'},
+{n:3,name:'الملك',m:'المالك لكل شيء'},
+{n:4,name:'القدوس',m:'المنزّه عن كل نقص'},
+{n:5,name:'السلام',m:'ذو السلامة من كل عيب'},
+{n:6,name:'المؤمن',m:'المصدّق لرسله بالمعجزات'},
+{n:7,name:'المهيمن',m:'الرقيب على كل شيء'},
+{n:8,name:'العزيز',m:'الذي لا يُغلب'},
+{n:9,name:'الجبار',m:'الذي يجبر الكسير'},
+{n:10,name:'المتكبر',m:'ذو الكبرياء والعظمة'},
+{n:11,name:'الخالق',m:'الذي خلق كل شيء'},
+{n:12,name:'البارئ',m:'الذي برأ الخلق'},
+{n:13,name:'المصور',m:'الذي صوّر الخلق'},
+{n:14,name:'الغفار',m:'كثير المغفرة'},
+{n:15,name:'القهار',m:'الغالب على كل شيء'},
+{n:16,name:'الوهاب',m:'كثير العطاء بلا سبب'},
+{n:17,name:'الرزاق',m:'الذي يرزق جميع خلقه'},
+{n:18,name:'الفتاح',m:'الذي يفتح أبواب الخير'},
+{n:19,name:'العليم',m:'الذي يعلم كل شيء'},
+{n:20,name:'القابض',m:'الذي يقبض الأرزاق'},
+{n:21,name:'الباسط',m:'الذي يبسط الرزق'},
+{n:22,name:'الخافض',m:'الذي يخفض من يشاء'},
+{n:23,name:'الرافع',m:'الذي يرفع من يشاء'},
+{n:24,name:'المعز',m:'الذي يُعزّ من يشاء'},
+{n:25,name:'المذل',m:'الذي يُذلّ من يشاء'},
+{n:26,name:'السميع',m:'الذي يسمع كل شيء'},
+{n:27,name:'البصير',m:'الذي يبصر كل شيء'},
+{n:28,name:'الحكم',m:'الحاكم بين الخلق'},
+{n:29,name:'العدل',m:'ذو العدل المطلق'},
+{n:30,name:'اللطيف',m:'العالم بدقائق الأمور'},
+{n:31,name:'الخبير',m:'العالم بخفايا الأمور'},
+{n:32,name:'الحليم',m:'الذي لا يعجل بالعقوبة'},
+{n:33,name:'العظيم',m:'ذو العظمة الكاملة'},
+{n:34,name:'الغفور',m:'كثير المغفرة والستر'},
+{n:35,name:'الشكور',m:'الذي يشكر اليسير من العمل'},
+{n:36,name:'العلي',m:'الأعلى من كل شيء'},
+{n:37,name:'الكبير',m:'الذي لا أكبر منه'},
+{n:38,name:'الحفيظ',m:'الذي يحفظ كل شيء'},
+{n:39,name:'المقيت',m:'القائم على كل شيء'},
+{n:40,name:'الحسيب',m:'الكافي لعباده'},
+{n:41,name:'الجليل',m:'ذو الجلال والهيبة'},
+{n:42,name:'الكريم',m:'كثير الكرم والجود'},
+{n:43,name:'الرقيب',m:'الذي لا يغفل'},
+{n:44,name:'المجيب',m:'الذي يجيب الدعاء'},
+{n:45,name:'الواسع',m:'الذي وسع كل شيء'},
+{n:46,name:'الحكيم',m:'ذو الحكمة البالغة'},
+{n:47,name:'الودود',m:'الودود لعباده'},
+{n:48,name:'المجيد',m:'ذو المجد والعظمة'},
+{n:49,name:'الباعث',m:'الذي يبعث الخلق'},
+{n:50,name:'الشهيد',m:'المطّلع على كل شيء'},
+{n:51,name:'الحق',m:'الموجود حقاً'},
+{n:52,name:'الوكيل',m:'الموكول إليه الأمور'},
+{n:53,name:'القوي',m:'ذو القوة المتين'},
+{n:54,name:'المتين',m:'الشديد القوة'},
+{n:55,name:'الولي',m:'الناصر لعباده'},
+{n:56,name:'الحميد',m:'المستحق للثناء'},
+{n:57,name:'المحصي',m:'الذي أحصى كل شيء'},
+{n:58,name:'المبدئ',m:'الذي بدأ الخلق'},
+{n:59,name:'المعيد',m:'الذي يعيد الخلق'},
+{n:60,name:'المحيي',m:'واهب الحياة'},
+{n:61,name:'المميت',m:'مقدّر الموت'},
+{n:62,name:'الحي',m:'الحي الذي لا يموت'},
+{n:63,name:'القيوم',m:'القائم بتدبير الخلق'},
+{n:64,name:'الواجد',m:'الذي لا يفقد شيئاً'},
+{n:65,name:'الماجد',m:'ذو المجد والعلو'},
+{n:66,name:'الواحد',m:'الواحد الأحد'},
+{n:67,name:'الأحد',m:'الفرد المتفرد'},
+{n:68,name:'الصمد',m:'المقصود في الحوائج'},
+{n:69,name:'القادر',m:'القادر على كل شيء'},
+{n:70,name:'المقتدر',m:'ذو القدرة التامة'},
+{n:71,name:'المقدم',m:'الذي يقدّم ما يشاء'},
+{n:72,name:'المؤخر',m:'الذي يؤخر ما يشاء'},
+{n:73,name:'الأول',m:'الذي ليس قبله شيء'},
+{n:74,name:'الآخر',m:'الذي ليس بعده شيء'},
+{n:75,name:'الظاهر',m:'الظاهر فوق كل شيء'},
+{n:76,name:'الباطن',m:'العالم بالسرائر'},
+{n:77,name:'الوالي',m:'المتولي لأمور خلقه'},
+{n:78,name:'المتعالي',m:'الذي تعالى عن كل نقص'},
+{n:79,name:'البر',m:'الرفيق بعباده واسع البر'},
+{n:80,name:'التواب',m:'الذي يقبل التوبة'},
+{n:81,name:'المنتقم',m:'ذو البطش الشديد'},
+{n:82,name:'العفو',m:'الذي يعفو عن الذنوب'},
+{n:83,name:'الرؤوف',m:'الرفيق بالعباد'},
+{n:84,name:'مالك الملك',m:'صاحب الملك كله'},
+{n:85,name:'ذو الجلال والإكرام',m:'صاحب العظمة والكرم'},
+{n:86,name:'المقسط',m:'ذو القسط والعدل'},
+{n:87,name:'الجامع',m:'الذي يجمع الخلائق'},
+{n:88,name:'الغني',m:'المستغني عن كل شيء'},
+{n:89,name:'المغني',m:'الذي يُغني من يشاء'},
+{n:90,name:'المانع',m:'الذي يمنع ما يشاء'},
+{n:91,name:'الضار',m:'المقدّر للضر'},
+{n:92,name:'النافع',m:'الذي ينفع من يشاء'},
+{n:93,name:'النور',m:'نور السماوات والأرض'},
+{n:94,name:'الهادي',m:'الذي يهدي من يشاء'},
+{n:95,name:'البديع',m:'المبدع الذي لا مثيل له'},
+{n:96,name:'الباقي',m:'الدائم الذي لا يفنى'},
+{n:97,name:'الوارث',m:'الذي يرث الأرض ومن عليها'},
+{n:98,name:'الرشيد',m:'المرشد إلى الصواب'},
+{n:99,name:'الصبور',m:'الصبور على خلقه'},
+];
+
+</script>
+
+<script>
 // 05_app.js — منطق التطبيق
 (function(){
 'use strict';
@@ -818,12 +965,14 @@ function showView(v){
   $('#screen-home').classList.toggle('hidden',v!=='home');
   $('#screen-azkar').classList.toggle('hidden',v!=='azkar');
   $('#screen-nawawi').classList.toggle('hidden',v!=='nawawi');
+  $('#screen-asma').classList.toggle('hidden',v!=='asma');
 }
 $('#homeBtn').addEventListener('click',function(){showView('home')});
 $$('.home-card').forEach(function(c){
   c.addEventListener('click',function(){
     var go=c.dataset.go;
     if(go==='nawawi'){showView('nawawi')}
+    else if(go==='asma'){showView('asma')}
     else{
       part=go;
       $$('.seg-btn').forEach(function(x){x.classList.toggle('active',x.dataset.part===go)});
@@ -951,9 +1100,24 @@ $('#searchInput').addEventListener('input',function(e){
   tmr=setTimeout(function(){renderList(v)},120);
 });
 
+/* ---------- أسماء الله الحسنى ---------- */
+function renderAsma(){
+  var wrap=$('#asmaList');
+  if(wrap.children.length)return;
+  ASMA.forEach(function(a){
+    var d=document.createElement('div');
+    d.className='asma-card';
+    d.innerHTML='<span class="asma-num">'+AR(a.n)+'</span>'+
+      '<span class="asma-name">'+a.name+'</span>'+
+      '<span class="asma-m">'+a.m+'</span>';
+    wrap.appendChild(d);
+  });
+}
+
 /* ---------- التشغيل ---------- */
 renderAzkar();
 renderList('');
+renderAsma();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('sw.js').catch(function(){});
