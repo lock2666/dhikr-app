@@ -131,7 +131,10 @@ html[data-theme="dark"] .bar i{background:linear-gradient(90deg,#1C8F63,#3FC087)
 }
 .chip.gold{color:var(--gold-ink);background:var(--gold-soft);border-color:transparent}
 html[data-theme="dark"] .chip.gold{color:var(--gold)}
-.z-text{font-family:'Amiri','Geeza Pro',serif;font-size:var(--read);line-height:2.05;margin:14px 0 4px}
+.z-text{font-family:'Amiri','Geeza Pro',serif;font-size:var(--read);line-height:2.05;margin:14px 0 4px;cursor:pointer;border-radius:12px;transition:background .2s}
+.z-text.speaking{background:var(--gold-soft);outline:3px solid var(--gold)}
+.speak-chip{color:var(--gold-ink);background:var(--gold-soft);border-color:transparent;cursor:pointer}
+html[data-theme="dark"] .speak-chip{color:var(--gold)}
 .z-note{font-size:calc(var(--ui)*.8);color:var(--ink2);margin-top:10px;line-height:1.9}
 .cnt-row{display:flex;align-items:center;gap:16px;margin-top:18px}
 .count-badge{
@@ -195,8 +198,11 @@ html[data-theme="dark"] .d-badge{color:var(--gold)}
 .d-text{
   font-family:'Amiri','Geeza Pro',serif;font-size:var(--read);line-height:2.2;
   background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:24px 22px;box-shadow:var(--shadow);margin-top:16px;
+  padding:24px 22px;box-shadow:var(--shadow);margin-top:16px;cursor:pointer;transition:background .2s;
 }
+.d-text.speaking{background:var(--gold-soft);outline:3px solid var(--gold)}
+.d-hint{font-size:calc(var(--ui)*.72);color:var(--gold-ink);margin-top:14px;font-weight:700}
+html[data-theme="dark"] .d-hint{color:var(--gold)}
 .d-label{
   display:flex;align-items:center;gap:10px;margin:26px 0 12px;
   font-weight:900;color:var(--primary);font-size:calc(var(--ui)*.95);
@@ -961,8 +967,50 @@ if(!theme)theme=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').m
 applyTheme(theme);
 $('#themeBtn').addEventListener('click',function(){theme=(theme==='dark'?'light':'dark');applyTheme(theme)});
 
+/* ---------- الاستماع (الصوت) ---------- */
+var arVoice=null,speakingEl=null;
+function pickVoice(){
+  if(!('speechSynthesis' in window))return;
+  var vs=speechSynthesis.getVoices()||[];
+  var pref=vs.filter(function(v){return /^ar/i.test(v.lang)&&/majed|majid|google|naayf|hoda/i.test(v.name)})[0];
+  arVoice=pref||vs.filter(function(v){return /^ar/i.test(v.lang)})[0]||null;
+}
+if('speechSynthesis' in window&&speechSynthesis.onvoiceschanged!==undefined){
+  speechSynthesis.onvoiceschanged=pickVoice;
+}
+function stripTashkeel(s){
+  return String(s).replace(/[\u064B-\u0652\u0670\u0640]/g,'');
+}
+function stopSpeak(){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  if(speakingEl){speakingEl.classList.remove('speaking');speakingEl=null}
+}
+function speakToggle(text,el){
+  if(!('speechSynthesis' in window))return;
+  if(speakingEl===el&&speechSynthesis.speaking){stopSpeak();return}
+  speechSynthesis.cancel();
+  if(speakingEl)speakingEl.classList.remove('speaking');
+  pickVoice();
+  var u=new SpeechSynthesisUtterance(stripTashkeel(text));
+  u.lang='ar-SA';
+  if(arVoice){u.voice=arVoice;u.lang=arVoice.lang}
+  u.rate=0.92;
+  u.onend=function(){if(el){el.classList.remove('speaking');if(speakingEl===el)speakingEl=null}};
+  u.onerror=u.onend;
+  speakingEl=el;
+  if(el)el.classList.add('speaking');
+  speechSynthesis.speak(u);
+}
+/* نص الحديث للقراءة: المتن فقط دون الراوي ودون التخريج/الشرح */
+function hadithSpeechText(t){
+  var i=t.indexOf('"'),j=t.lastIndexOf('"');
+  var s=(i>=0&&j>i)?t.slice(i+1,j):t;
+  return s.replace(/"/g,'');
+}
+
 /* ---------- التنقل بين الأقسام ---------- */
 function showView(v){
+  stopSpeak();
   $('#screen-home').classList.toggle('hidden',v!=='home');
   $('#screen-azkar').classList.toggle('hidden',v!=='azkar');
   $('#screen-nawawi').classList.toggle('hidden',v!=='nawawi');
@@ -1014,6 +1062,7 @@ function renderAzkar(){
       '<div class="z-tags">'+
         '<span class="chip">التكرار: '+AR(d.count)+'</span>'+
         '<span class="chip gold">'+d.src+'</span>'+
+        '<span class="chip speak-chip">🔊 استمع</span>'+
       '</div>'+
       '<div class="z-text">'+d.text+'</div>'+
       (d.note?'<div class="z-note">'+d.note+'</div>':'')+
@@ -1024,6 +1073,9 @@ function renderAzkar(){
           '<button class="bigbtn'+(done?' done':'')+'" aria-label="عدّ الذكر">'+(done?'✓':AR(rem))+'</button>'+
         '</div>'+
       '</div>';
+    card.querySelector('.z-text').addEventListener('click',function(){
+      speakToggle(d.text,this);
+    });
     card.querySelector('.bigbtn').addEventListener('click',function(){
       if(remaining(d)>0){counts[part][d.id]=(counts[part][d.id]||0)+1;saveCounts();renderAzkar()}
     });
@@ -1081,18 +1133,22 @@ function openH(n){
   $('#detailBody').innerHTML=
     '<span class="d-badge">الحديث '+AR(n)+' من '+AR(NAWAWI.length)+'</span>'+
     '<div class="d-rawi">'+h.r+'</div>'+
+    '<div class="d-hint">🔊 اضغط على نص الحديث للاستماع</div>'+
     '<div class="d-text">'+h.t+'</div>'+
     '<div class="d-label">شرحٌ موجز</div>'+
     '<div class="d-expl">'+h.x+'</div>'+
     '<span class="chip gold d-chip">'+h.s+'</span>';
+  document.querySelector('#detailBody .d-text').addEventListener('click',function(){
+    speakToggle(hadithSpeechText(h.t),this);
+  });
   $('#prevH').disabled=n<=1;
   $('#nextH').disabled=n>=NAWAWI.length;
   $('#detail').classList.remove('hidden');
   document.querySelector('.detail-body').scrollTop=0;
 }
-$('#closeDetail').addEventListener('click',function(){$('#detail').classList.add('hidden')});
-$('#prevH').addEventListener('click',function(){if(cur>1)openH(cur-1)});
-$('#nextH').addEventListener('click',function(){if(cur<NAWAWI.length)openH(cur+1)});
+$('#closeDetail').addEventListener('click',function(){stopSpeak();$('#detail').classList.add('hidden')});
+$('#prevH').addEventListener('click',function(){stopSpeak();if(cur>1)openH(cur-1)});
+$('#nextH').addEventListener('click',function(){stopSpeak();if(cur<NAWAWI.length)openH(cur+1)});
 
 var tmr;
 $('#searchInput').addEventListener('input',function(e){
