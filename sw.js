@@ -1,9 +1,13 @@
 /* Service Worker — يخزّن التطبيق للعمل دون إنترنت (PWA) */
-const CACHE = 'dhikr-v1';
+const CACHE = 'dhikr-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './fonts/fonts.css',
+  './fonts/f1.woff2','./fonts/f2.woff2','./fonts/f3.woff2',
+  './fonts/f4.woff2','./fonts/f5.woff2','./fonts/f6.woff2',
+  './fonts/f7.woff2','./fonts/f8.woff2','./fonts/f9.woff2',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png'
